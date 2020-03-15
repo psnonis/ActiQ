@@ -1,0 +1,17 @@
+.c0 { color: rgba(118, 39,108,1) }	/* Main Primary color */
+.c1 { color: rgba(177,118,169,1) }
+.c2 { color: rgba(147, 74,138,1) }
+.c3 { color: rgba( 88, 15, 79,1) }
+.c4 { color: rgba( 59,  0, 52,1) }
+
+.mic
+{
+  border-radius : 4px;
+  height        : 48px;
+  width         : 100%;
+}
+
+body
+{
+  background: bisque;
+}

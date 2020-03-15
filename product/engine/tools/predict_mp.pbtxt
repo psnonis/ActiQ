@@ -1,0 +1,122 @@
+input_side_packet: "input_sequence_example_path"
+input_side_packet: "input_video_path"
+input_side_packet: "output_video_path"
+input_side_packet: "segment_size"
+input_side_packet: "overlap"
+
+node {
+  calculator: "LocalFileContentsCalculator"
+  input_side_packet: "FILE_PATH:input_sequence_example_path"
+  output_side_packet: "CONTENTS:input_sequence_example"
+}
+
+node {
+  calculator: "StringToSequenceExampleCalculator"
+  input_side_packet: "STRING:input_sequence_example"
+  output_side_packet: "SEQUENCE_EXAMPLE:parsed_sequence_example"
+}
+
+node {
+  calculator: "UnpackMediaSequenceCalculator"
+  input_side_packet: "SEQUENCE_EXAMPLE:parsed_sequence_example"
+  output_stream: "FLOAT_FEATURE_RGB:rgb_feature_vector"
+  output_stream: "FLOAT_FEATURE_AUDIO:audio_feature_vector"
+}
+
+node {
+  calculator: "ConcatenateFloatVectorCalculator"
+  input_stream: "rgb_feature_vector"
+  input_stream: "audio_feature_vector"
+  output_stream: "feature_vector"
+}
+
+node {
+  calculator: "VectorFloatToTensorCalculator"
+  input_stream: "feature_vector"
+  output_stream: "feature_tensor"
+}
+
+node {
+  calculator: "StringToInt32Calculator"
+  input_side_packet: "segment_size"
+  output_side_packet: "segment_size_int"
+}
+
+node {
+  calculator: "StringToInt32Calculator"
+  input_side_packet: "overlap"
+  output_side_packet: "overlap_int"
+}
+
+node {
+  calculator: "LappedTensorBufferCalculator"
+  input_stream: "feature_tensor"
+  output_stream: "lapped_feature_tensor"
+  input_side_packet: "BUFFER_SIZE:segment_size_int"
+  input_side_packet: "OVERLAP:overlap_int"
+  node_options: {
+    [type.googleapis.com/mediapipe.LappedTensorBufferCalculatorOptions] {
+      add_batch_dim_to_tensors: true
+    }
+  }
+}
+
+node {
+  calculator: "SidePacketToStreamCalculator"
+  input_side_packet: "segment_size_int"
+  output_stream: "AT_ZERO:segment_size_int_stream"
+}
+
+node {
+  calculator: "VectorIntToTensorCalculator"
+  input_stream: "SINGLE_INT:segment_size_int_stream"
+  output_stream: "TENSOR_OUT:segment_size_tensor"
+}
+
+node {
+  calculator: "PacketClonerCalculator"
+  input_stream: "segment_size_tensor"
+  input_stream: "lapped_feature_tensor"
+  output_stream: "synced_segment_size_tensor"
+}
+
+node {
+  calculator: "TensorFlowSessionFromSavedModelCalculator"
+  output_side_packet: "SESSION:session"
+  node_options: {
+    [type.googleapis.com/mediapipe.TensorFlowSessionFromSavedModelCalculatorOptions]: {
+      saved_model_path: "tools/mp-baseline"
+    }
+  }
+}
+
+node: {
+  calculator: "TensorFlowInferenceCalculator"
+  input_side_packet: "SESSION:session"
+  input_stream: "NUM_FRAMES:synced_segment_size_tensor"
+  input_stream: "RGB_AND_AUDIO:lapped_feature_tensor"
+  output_stream: "PREDICTIONS:prediction_tensor"
+  node_options: {
+    [type.googleapis.com/mediapipe.TensorFlowInferenceCalculatorOptions]: {
+      batch_size: 32
+    }
+  }
+}
+
+node {
+  calculator: "TensorToVectorFloatCalculator"
+  input_stream: "prediction_tensor"
+  output_stream: "prediction_vector"
+}
+
+node {
+  calculator: "TopKScoresCalculator"
+  input_stream: "SCORES:prediction_vector"
+  output_stream: "SUMMARY:annotation_summary"
+  node_options: {
+    [type.googleapis.com/mediapipe.TopKScoresCalculatorOptions]: {
+      top_k: 9
+      label_map_path: "tools/mp/mediapipe/graphs/youtube8m/label_map.txt"
+    }
+  }
+}

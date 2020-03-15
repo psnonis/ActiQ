@@ -1,0 +1,22 @@
+video=${1-NcFVcihJHck}
+stime=${2-000}
+etime=${3-120}
+cache=$(realpath cache)
+tools=$(realpath tools)
+
+SECONDS=0
+
+echo [EXTRACT] ${video}: Starting
+
+python ${tools}/extract_mp.py \
+${cache}/${video}.incoming.mp4 \
+${cache}/${video}.metadata.${stime}-${etime}.pb \
+${stime} \
+${etime}
+
+${tools}/mp/bazel-bin/actiq/extract_mp \
+--calculator_graph_config_file=${tools}/extract_mp.pbtxt \
+--input_side_packets=input_sequence_example=${cache}/${video}.metadata.${stime}-${etime}.pb \
+--output_side_packets=output_sequence_example=${cache}/${video}.features.${stime}-${etime}.pb
+
+echo [EXTRACT] ${video}: Finished in ${SECONDS} Seconds

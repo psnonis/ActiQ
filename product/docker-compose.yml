@@ -1,0 +1,84 @@
+version: "3.3"
+
+services:
+  
+  meteor:
+    container_name: meteor
+    depends_on:
+      - nginx-proxy
+      - nginx-proxy-letsencrypt
+    environment: 
+      - VIRTUAL_HOST=www.tiki.systems
+      - LETSENCRYPT_HOST=www.tiki.systems
+      - VIRTUAL_PORT=3000
+    networks:
+      - hostnet
+    ports:
+      - 3000:3000
+    build: 
+      context: ./meteor/
+
+  pythia:
+    container_name: pythia
+    depends_on:
+      - nginx-proxy
+      - nginx-proxy-letsencrypt
+    networks:
+      - hostnet
+    ports:
+      - 5000:5000
+    build: 
+      context: ./pythia/
+
+
+  interpreter:
+    container_name: interpreter
+    depends_on:
+      - nginx-proxy
+      - nginx-proxy-letsencrypt
+    networks:
+      - hostnet
+    ports:
+      - 5001:5000
+    build: 
+      context: ./interpreter/
+  
+  nginx-proxy:
+    container_name: nginx-proxy
+    ports:
+      - 80:80
+      - 443:443
+    networks:
+      - hostnet
+    volumes:
+      - certs:/etc/nginx/certs
+      - vhost.d:/etc/nginx/vhost.d
+      - html:/usr/share/nginx/html
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+    build: 
+      context: ./nginx/
+  
+  nginx-proxy-letsencrypt:
+    container_name: nginx-proxy-letsencrypt
+    environment: 
+      - DEFAULT_EMAIL=brentbiseda@gmail.com
+      - NGINX_PROXY_CONTAINER=nginx-proxy
+    depends_on:
+      - nginx-proxy
+    networks:
+      - hostnet
+    volumes:
+      - certs:/etc/nginx/certs
+      - vhost.d:/etc/nginx/vhost.d
+      - html:/usr/share/nginx/html
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    image: jrcs/letsencrypt-nginx-proxy-companion
+
+volumes:
+  certs:
+  vhost.d:
+  html: 
+
+networks:
+  hostnet:
+    driver: bridge

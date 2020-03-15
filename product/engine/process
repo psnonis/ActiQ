@@ -1,0 +1,8 @@
+  video=${1-btTKApmxrtk}
+  stime=${2-000}
+  etime=${3-120}
+
+  acquire    ${video}
+  extract-mp ${video} ${stime} ${etime}
+  predict-mp ${video} ${stime} ${etime}
+# overlay-mp ${video} ${stime} ${etime}

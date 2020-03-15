@@ -1,0 +1,2 @@
+export METEOR_ALLOW_SUPERUSER=1
+meteor run --port 80
