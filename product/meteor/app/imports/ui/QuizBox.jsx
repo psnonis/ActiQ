@@ -16,13 +16,13 @@ import { primary,
 
 const useStyles = makeStyles(
 {
-  roo :
+  root :
   {
     display         : 'flex',
     width           : '100%',
     marginTop       : 8,
     alignItems      : 'center',
-    backgroundColor : 'beige',
+//  backgroundColor : secondary,
   },
 
   txt :
@@ -60,7 +60,7 @@ export default function QuizBox(props, hey) {
   const cls = useStyles()
 
   return (
-    <Paper        className={cls.roo}>
+    <Paper        className={cls.root}>
       <IconButton className={cls.cam}  onClick={(e) => props.onClickCam(e)}><CameraAltIcon /></IconButton>
       <InputBase  className={cls.txt} onChange={(e) => props.onTypeText(e)} placeholder="Ask a Question" value={props.question} />
       <IconButton className={cls.mic}  onClick={(e) => props.onClickMic(e)}><MicIcon       /></IconButton>

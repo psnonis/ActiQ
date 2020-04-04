@@ -1,17 +1,16 @@
 import React from 'react'
 import { BrowserRouter, Route, Switch } from 'react-router-dom'
 
-import PrimeAsk from './PrimeAsk'
-import GroupAsk from './GroupAsk'
-
-import NotFound from './NotFound'
+import InquirePage from './InquirePage'
+import ImportsPage from './ImportsPage'
+import MissingPage from './MissingPage'
 
 const Router = () => (
     <BrowserRouter>
         <Switch>
-            <Route exact path='/'          component={PrimeAsk}/>
-            <Route exact path='/GroupAsk/' component={GroupAsk}/>
-            <Route                         component={NotFound} />
+            <Route exact path='/'        component={InquirePage}/>
+            <Route exact path='/import/' component={ImportsPage}/>
+            <Route                       component={MissingPage}/>
         </Switch>
     </BrowserRouter>
 )

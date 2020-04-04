@@ -35,51 +35,11 @@ const styles = makeStyles(theme => (
 
 const css =
 {
-  roo :
+  root :
   {
     padding    : 0,
 //  marginTop  : 8,
     background : 'transparent',
-  },
-
-  pac :
-  {
-    display    : 'flex',
-    width      : '100%',
-    marginTop  : 8,
-    alignItems : 'center',
-    background : 'magenta',
-  },
-
-  cam :
-  {
-    display      : 'flex',
-    background   : 'black',
-    width        : '100%',
-    borderRadius : 4
-  },
-
-  pam :
-  {
-    display    : 'flex',
-    width      : '100%',
-    marginTop  : 8,
-    alignItems : 'center',
-    background : 'magenta',
-
-/*  width      : '100%',
-    marginTop  : 8,
-    overflowX  : 'auto',
-    background : 'magenta'
-*/    
-  },
-
-  mic :
-  {
-    display      : 'block',
-    width        : '100%',
-    background   : primary,
-    borderRadius : 4
   },
 
   box :
@@ -88,25 +48,19 @@ const css =
   }
 }
 
-export default class VAQuery extends React.Component
+export default class QueriesCard extends React.Component
 {
   render = () =>
   {
-    console.log(`client > VAQuery > render`)
+    console.log(`client > Queries > render`)
 
     return (
-      <Container style={css.roo}>
-        <Paper style={css.pac}>
-          
-        </Paper>
-        <Paper style={css.pam}>
-          
-        </Paper>
+      <Container id="QueriesRoot" style={css.root}>
         <QuizBox style={css.box}
-                  context={this.props.context}
-                  question={this.state.question}
-                  onTypeText={this.onTypeText}
-                  onClickAsk={this.onClickAsk} />
+                 context={this.props.context}
+                 question={this.state.question}
+                 onTypeText={this.onTypeText}
+                 onClickAsk={this.onClickAsk} />
       </Container>
     )
   }
@@ -121,44 +75,32 @@ export default class VAQuery extends React.Component
     this.ready = true
     this.state = 
     {
-      question : 'swimming at beach',
-      record   : false,
-      vidCon   :
-      {
-        facingMode : 'environment',
-        height     : 240,
-        width      : 360,
-      }
+      question : 'swimming at beach'
     }
-  }
-
-  setRef = (webcam) =>
-  {
-    this.webcam = webcam
   }
 
   queryIndex = () =>
   {
     if (!this.ready)
     {
-      console.log(`client > VAQuery > queryIndex : Not Ready`)
+      console.log(`client > Queries > queryIndex : Not Ready`)
     }
     else
     {
       this.ready = false
 
-      console.log(`client > VAQuery > queryIndex`)
+      console.log(`client > Queries > queryIndex`)
 
       var   question = this.state.question
 
-      console.log('client > VAQuery > queryIndex : callin api_queryIndex_fake')
+      console.log('client > Queries > queryIndex : callin api_queryIndex_fake')
   
       Session.set(  'FIRST', false)
       Session.set('RESULTS',  null)
 
       Meteor.call('api_queryIndex_fake', { query : question }, (err, res) =>
       {
-        console.log('client > VAQuery > queryIndex : return api_queryIndex_fake')
+        console.log('client > Queries > queryIndex : return api_queryIndex_fake')
 
         if (err) console.log(`ERR => ${err}`)
         if (res) console.log(`RES => ${JSON.stringify(res, null, 4)}`)
@@ -172,14 +114,14 @@ export default class VAQuery extends React.Component
 
   onClickAsk = (e) =>
   {
-    console.log(`client > VAQuery > onClickAsk`)
+    console.log(`client > Queries > onClickAsk`)
 
     this.queryIndex()
   }
 
   onTypeText = (e) =>
   {
-    console.log(`client > VAQuery > onTypeText`)
+    console.log(`client > Queries > onTypeText`)
 
     this.setState({ question : e.target.value })
   }

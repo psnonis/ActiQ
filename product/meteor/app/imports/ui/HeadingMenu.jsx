@@ -27,14 +27,15 @@ const useStyles = makeStyles(theme => (
 
   bar :
   {
-    backgroundColor : primary,
-    borderRadius : 4,
+//  backgroundColor : primary,
+    borderRadius    : 4,
   },
 
   menu :
   {
     marginRight : theme.spacing(2),
   },
+
   title :
   {
     flexGrow : 1,
@@ -49,17 +50,17 @@ const useStyles = makeStyles(theme => (
   }
 }))
 
-export default function TikiBar()
+export default function HeadingMenu()
 {
   const cls = useStyles()
 
   return (
     <React.Fragment>
-    <Grid id="TikiBarRoot" className={cls.root}>
-      <AppBar position="static" className={cls.bar} color="secondary">
+    <Grid id="HeadingRoot" className={cls.root}>
+      <AppBar position="static" className={cls.bar}>
         <Toolbar>
             <IconButton edge="start" className={cls.menu} color="inherit" aria-label="menu"><MenuIcon /></IconButton>
-            <Typography variant="h6" className={cls.title}>Video Activity Search Engine</Typography>
+            <Typography variant="h6" className={cls.title}>ActiQ : Video Activity Search Engine</Typography>
         </Toolbar>
       </AppBar>
     </Grid>

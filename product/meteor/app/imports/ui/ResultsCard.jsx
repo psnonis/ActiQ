@@ -1,5 +1,5 @@
 import React           from 'react'
-import Say, { SayButton }             from 'react-say'
+import Say             from 'react-say'
 
 
 import Card            from '@material-ui/core/Card'
@@ -23,6 +23,9 @@ import { Session     } from 'meteor/session'
 import { makeStyles  } from '@material-ui/core/styles'
 import { withTracker } from 'meteor/react-meteor-data'
 
+import { primary,
+         secondary   } from './Themes'
+
 const useStyles = makeStyles(theme => (
 {
   card :
@@ -32,21 +35,14 @@ const useStyles = makeStyles(theme => (
   },
 }))
 
-const fake = [
-  { rank : 1, answer : 'A', probability : 20.0 },
-  { rank : 2, answer : 'B', probability : 20.0 },
-  { rank : 3, answer : 'C', probability : 20.0 },
-  { rank : 4, answer : 'D', probability : 20.0 },
-  { rank : 5, answer : 'E', probability : 20.0 },
-]
-
 const css =
 {
-  roo :
+  root :
   {
     width           : '100%',
     marginTop       : 8,
-    backgroundColor : 'beige'
+    borderRadius    : 4,
+//  backgroundColor : secondary
   },
 
   tab :
@@ -58,51 +54,36 @@ const css =
   },
 }
 
-class TikiSayComponent extends React.Component
+function speak(text)
+{
+  var msg = new SpeechSynthesisUtterance(text)
+  window.speechSynthesis.speak(msg)
+}
+
+class ResultsPart extends React.Component
 {
   constructor(props)
   {
     super(props)
 
-    console.log(`client > TikiSay > constr : ${this.props.context.hello}`)
-
-    this.onSay = this.onSay.bind(this)
-    this.state = 
-    {
-      speak : ''
-    }
-  }
-
-  onSay = () =>
-  {
-    if (this.state.speak)
-    {
-      console.log(`client > TikiSay > onSay : clearing`)
-      this.setState({ speak : '' })
-    }
-    else
-    {
-      console.log(`client > TikiSay > onSay : setting hello world`)
-      this.setState({ speak : 'hello world' })
-    }
-    
+    console.log(`client > Results > constr : ${JSON.stringify(this.props)}`)
   }
 
   render = () =>
   {
-    console.log(`client > TikiSay > render`)
+    console.log(`client > Results > render`)
 
   //const results = this.props.context.results // this does not work
   //const results = Session.get('RESULTS')     // this does not work without withTracker
     const results = this.props.results
     const first   = this.props.first
 
-    console.log(`client > TikiSay > render : Answers = ${JSON.stringify(results, null, 4)}`)
+    console.log(`client > Results > render : Answers = ${JSON.stringify(results, null, 4)}`)
 
     if (results && results.clips)
     {
       return (
-        <Paper style={css.roo}>
+        <Paper style={css.root}>
           <Table style={css.tab}>
             <TableHead>
               <TableRow>
@@ -129,7 +110,6 @@ class TikiSayComponent extends React.Component
               ))}
             </TableBody>
           </Table>
-          <Say speak={`found 3 hits across 1 videos`} />
         </Paper>
       )
     }
@@ -138,22 +118,22 @@ class TikiSayComponent extends React.Component
       if (first)
       {
         return (
-          <Paper style={css.roo}>
+          <Paper style={css.root}>
             <Grid container item justify="center" style={css.roo}>
               <iframe src="circle.html" height={261} frameBorder="0" />
             </Grid>
-            <Say speak={`hello, please make an activity query`} />
+            <Say speak={`please make an activity query`} />
           </Paper>
         )
       }
       else
       {
         return (
-          <Paper style={css.roo}>
-            <Grid container item justify="center" style={css.roo}>
+          <Paper style={css.root}>
+            <Grid container item justify="center" style={css.root}>
               <img style={css.gif} src="tiki.gif" height={261} />
             </Grid>
-            <Say speak={`Searching...`} />
+            <Say speak={`searching...`} />
           </Paper>
         )
       }
@@ -161,13 +141,13 @@ class TikiSayComponent extends React.Component
   }
 }
 
-export default TikiSay = withTracker(() =>
+export default ResultsCard = withTracker(() =>
 {
   let results = Session.get('RESULTS')
   let first   = Session.get('FIRST'  )
   
-  console.log(`client > TikiSay > trackr : RESULTS = ${results}, FIRST = ${first}`)
+  console.log(`client > Results > trackr : RESULTS = ${results}, FIRST = ${first}`)
 
   return { results : results, first : first }
 
-})(TikiSayComponent)
+})(ResultsPart)

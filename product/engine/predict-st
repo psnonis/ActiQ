@@ -1,0 +1,1 @@
+cat cache/*.vtt | sed -e 's/<[^>]*>//g' -e '/^\s*$/d' -e 's/ align:.*%//g'

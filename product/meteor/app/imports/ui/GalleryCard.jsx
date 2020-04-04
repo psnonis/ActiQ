@@ -14,6 +14,8 @@ import IconButton      from '@material-ui/core/IconButton'
 import StarBorderIcon  from '@material-ui/icons/StarBorder'
 
 import { makeStyles }  from '@material-ui/core/styles'
+import { primary,
+         secondary  }  from './Themes'
 
 const css =
 {
@@ -22,7 +24,7 @@ const css =
     width      : '100%',
     marginTop  : 8,
     overflowX  : 'auto',
-    background : 'beige'
+    background : secondary
   },
 
   root :
@@ -57,12 +59,13 @@ const css =
   }
 }
 
-class GalleryComponent extends React.Component
+class GalleryPart extends React.Component
 {
   constructor(props)
   {
     super(props)
-    this.captures = props.captures // Initial State
+
+    console.log(`client > Results > constr : ${JSON.stringify(this.props)}`)
   }
 
   getYTLink = (hit) =>
@@ -79,36 +82,55 @@ class GalleryComponent extends React.Component
 
   render = () =>
   {
-    this.captures = captures
+    const results = this.props.results
+    const first   = this.props.first
 
-    console.log('client > Gallery > render')
+    console.log(`client > Gallery > render : RESULTS = ${JSON.stringify(results)}`)
 
-    return (
-      <Paper style={css.top}>
-        <Grid style={css.root}>
-          <GridList style={css.list} cols={2.5}>
-            {this.captures.map(hit => (
-              <GridListTile key={hit._id} style={{width:640, height:360, padding:0}}>
-                <iframe style={css.tube} type="text/html" width="640" height="360" allow="autoplay" frameBorder="0"
-                        src={this.getYTLink(hit)}></iframe>
-                <GridListTileBar style={css.title} titlePosition="top" title={hit.terms} subtitle={hit.query} actionIcon={<IconButton style={css.icon}></IconButton>} />
-              </GridListTile>
-            ))}
-          </GridList>
-        </Grid>
-      </Paper>
-    )
+    if (results && results.clips)
+    {
+      return (
+        <Paper style={css.top}>
+          <Grid style={css.root}>
+            <GridList style={css.list} cols={2.5}>
+              {results.clips.map(hit => (
+                <GridListTile key={hit.rank} style={{width:640, height:360, padding:0}}>
+                  <iframe style={css.tube} type="text/html" width="640" height="360" allow="autoplay" frameBorder="0"
+                          src={this.getYTLink(hit)}></iframe>
+                  <GridListTileBar style={css.title} titlePosition="top" title={hit.terms} subtitle={hit.query} actionIcon={<IconButton style={css.icon}></IconButton>} />
+                </GridListTile>
+              ))}
+            </GridList>
+          </Grid>
+        </Paper>
+      )
+    }
+    else
+    {
+      if (first)
+      {
+        return (
+          <Paper style={css.roo}>
+          </Paper>
+        )
+      }
+      else
+      {
+        return (
+          <Paper style={css.roo}>
+          </Paper>
+        )
+      }
+    }
   }
 }
 
-export default Gallery = withTracker(() =>
+export default GalleryCard = withTracker(() =>
 {
-  const options = { sort : { createdAt : -1 }, limit : 10 };  // Reverse Order and Limit 10
+  let results = Session.get('RESULTS')
+  let first   = Session.get('FIRST'  )
   
-  captures = Captures.find({}, options).fetch()
-  
-  // console.log(`Gallery : ${JSON.stringify(captures)}`)
-  
-  return { captures : captures } 
+  console.log(`client > Gallery > trackr : RESULTS = ${results}, FIRST = ${first}`)
 
-})(GalleryComponent)
+  return { results : results, first : first }
+})(GalleryPart)

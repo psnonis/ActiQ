@@ -4,14 +4,9 @@
 .c3 { color: rgba( 88, 15, 79,1) }
 .c4 { color: rgba( 59,  0, 52,1) }
 
-.mic
-{
-  border-radius : 4px;
-  height        : 48px;
-  width         : 100%;
-}
+.x1 { color: rgba(220, 0, 78, 1) }
 
 body
 {
-  background: bisque;
+
 }
