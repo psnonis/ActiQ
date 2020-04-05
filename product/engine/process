@@ -1,6 +1,5 @@
     eval "$(conda shell.bash hook)"
    conda activate base --no-stack
-  export TF_CPP_MIN_LOG_LEVEL='2'
    clear
 
   video=${1-btTKApmxrtk}
@@ -10,11 +9,10 @@
   acquire    ${video}                   # acquire video
 
     conda activate mp --no-stack
-  extract-mp ${video} ${stime} ${etime} # extract mediapipe
   predict-mp ${video} ${stime} ${etime} # predict mediapipe
 
     conda activate sf --no-stack
   predict-sf ${video} ${stime} ${etime} # predict slowfast
 
   predict-st ${video} ${stime} ${etime} # predict subtitle
-  combine.py ${video} ${stime} ${etime} # combine csv
+  combine    ${video} ${stime} ${etime} # combine csv

@@ -1,0 +1,16 @@
+video=${1-NcFVcihJHck}
+cache=$(realpath cache)
+tools=$(realpath tools)
+
+SECONDS=0
+
+echo [OVERLAY] ${video}: Starting
+
+python ${tools}/predict_sf.py --config ${tools}/sf_ava.yaml \
+--video ${cache}/${video}.incoming.mp4 \
+--stime ${stime} \
+--etime ${etime} \
+--csv /dev/null  \
+--overlay 1 > /dev/null
+
+echo [OVERLAY] ${video}: Finished in ${SECONDS} Seconds

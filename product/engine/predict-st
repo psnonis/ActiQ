@@ -1,13 +1,12 @@
-
 video=${1-NcFVcihJHck}
 stime=${2-000}
 etime=${3-120}
 cache=$(realpath cache)
 tools=$(realpath tools)
-clear
+
 export SECONDS=0
 
-echo [PREDICT] ${video}: Starting of Subtitles
+echo -e "[PREDICT] ${video}: Starting of Subtitles"
 
 cat ${cache}/${video}.incoming.en.vtt \
 | sed -e '/webvtt/d' -e '/kind: captions/d' -e '/language: en/d' -e '/^\s*$/d' \
@@ -19,4 +18,4 @@ cat ${cache}/${video}.incoming.en.vtt \
 | python ${tools}/predict_st.py \
 > ${cache}/${video}.classify.${stime}-${etime}.st.csv
 
-echo [PREDICT] ${video}: Finished in ${SECONDS} Seconds
+echo -e "[PREDICT] ${video}: Finished in ${SECONDS} Seconds\n"

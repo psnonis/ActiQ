@@ -4,16 +4,34 @@ etime=${3-120}
 cache=$(realpath cache)
 tools=$(realpath tools)
 
-SECONDS=0
+export TF_CPP_MIN_LOG_LEVEL='2'
+export SECONDS=0
 
-echo [PREDICT] ${video}: Starting of MediaPipe
+echo -e "[PREDICT] ${video}: Starting of MediaPipe"
 
-${tools}/mp/bazel-bin/actiq/predict_mp \
---calculator_graph_config_file=${tools}/predict_mp.pbtxt \
---input_side_packets=input_sequence_example_path=${cache}/${video}.features.${stime}-${etime}.pb,input_video_path=${cache}/${video}.incoming.mp4,output_video_path=${cache}/${video}.outgoing.${stime}-${etime}.mp4,segment_size=5,overlap=4 \
---output_stream=annotation_summary \
---output_stream_file=${cache}/${video}.classify.${stime}-${etime}.mp.csv > /dev/null
+if [ -s ${cache}/${video}.classify.${stime}-${etime}.mp.csv ]
+then
+    echo -e "[PREDICT] ${video}: Skipping in ${SECONDS} Seconds - Baseline\n"
+else
 
-rm ${cache}/${video}.features.${stime}-${etime}.pb
+    python ${tools}/extract_mp.py \
+    ${cache}/${video}.incoming.mp4 \
+    ${cache}/${video}.metadata.${stime}-${etime}.pb \
+    ${stime} \
+    ${etime} > /dev/null
 
-echo [PREDICT] ${video}: Finished in ${SECONDS} Seconds
+    ${tools}/mp/bazel-bin/actiq/extract_mp \
+    --calculator_graph_config_file=${tools}/extract_mp.pbtxt \
+    --input_side_packets=input_sequence_example=${cache}/${video}.metadata.${stime}-${etime}.pb \
+    --output_side_packets=output_sequence_example=${cache}/${video}.features.${stime}-${etime}.pb && \
+    rm ${cache}/${video}.metadata.${stime}-${etime}.pb > /dev/null
+
+    ${tools}/mp/bazel-bin/actiq/predict_mp \
+    --calculator_graph_config_file=${tools}/predict_mp.pbtxt \
+    --input_side_packets=input_sequence_example_path=${cache}/${video}.features.${stime}-${etime}.pb,input_video_path=${cache}/${video}.incoming.mp4,output_video_path=${cache}/${video}.outgoing.${stime}-${etime}.mp4,segment_size=5,overlap=4 \
+    --output_stream=annotation_summary \
+    --output_stream_file=${cache}/${video}.classify.${stime}-${etime}.mp.csv && \
+    rm ${cache}/${video}.features.${stime}-${etime}.pb > /dev/null
+
+    echo -e "[PREDICT] ${video}: Finished in ${SECONDS} Seconds -Baseline\n"
+fi

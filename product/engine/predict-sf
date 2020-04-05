@@ -3,12 +3,41 @@ stime=${2-000}
 etime=${3-120}
 cache=$(realpath cache)
 tools=$(realpath tools)
-clear
+
 export SECONDS=0
 
-echo [PREDICT] ${video}: Starting of SlowFast
+echo -e "[PREDICT] ${video}: Starting of  SlowFast"
 
-python ${tools}/predict_sf.py --config ${tools}/sf_kinetics.yaml --video ${cache}/${video}.incoming.mp4 --stime ${stime} --etime ${etime} --csv ${cache}/${video}.classify.${stime}-${etime}.sk.csv
-python ${tools}/predict_sf.py --config ${tools}/sf_ava.yaml      --video ${cache}/${video}.incoming.mp4 --stime ${stime} --etime ${etime} --csv ${cache}/${video}.classify.${stime}-${etime}.sa.csv
+if [ -s ${cache}/${video}.classify.${stime}-${etime}.sk.csv ]
+then
+    echo -e "[PREDICT] ${video}: Skipping in ${SECONDS} Seconds - Kinetics"
+else
 
-echo [PREDICT] ${video}: Finished in ${SECONDS} Seconds
+    export SECONDS=0
+
+    python ${tools}/predict_sf.py --config ${tools}/sf_kinetics.yaml \
+    --video ${cache}/${video}.incoming.mp4 \
+    --stime ${stime} \
+    --etime ${etime} \
+    --csv ${cache}/${video}.classify.${stime}-${etime}.sk.csv > /dev/null
+
+    echo -e "[PREDICT] ${video}: Finished in ${SECONDS} Seconds - Kinetics"
+
+fi
+
+if [ -s ${cache}/${video}.classify.${stime}-${etime}.sa.csv ]
+then
+    echo -e "[PREDICT] ${video}: Skipping in ${SECONDS} Seconds - AVA\n"
+else
+
+    export SECONDS=0
+
+    python ${tools}/predict_sf.py --config ${tools}/sf_ava.yaml \
+    --video ${cache}/${video}.incoming.mp4 \
+    --stime ${stime} \
+    --etime ${etime} \
+    --csv ${cache}/${video}.classify.${stime}-${etime}.sa.csv > /dev/null
+
+    echo -e "[PREDICT] ${video}: Finished in ${SECONDS} Seconds - AVA\n"
+
+fi

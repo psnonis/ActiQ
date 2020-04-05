@@ -6,7 +6,13 @@ SECONDS=0
 
 echo [ACQUIRE] ${video}: Starting
 
-${tools}/yt -q -f mp4 -o "${cache}/${video}.incoming.mp4" --write-sub --write-auto-sub --write-thumbnail ${video}
-touch ${cache}/${video}.incoming.mp4
+if [ -s ${cache}/${video}.incoming.mp4 ]
+then
+    touch ${cache}/${video}.incoming.mp4
 
-echo [ACQUIRE] ${video}: Finished in ${SECONDS} Seconds
+    echo -e "[ACQUIRE] ${video}: Skipping in ${SECONDS} Seconds\n"
+else
+    ${tools}/yt -q -f mp4 -o "${cache}/${video}.incoming.mp4" --write-sub --write-auto-sub --write-thumbnail ${video}
+
+    echo -e "[ACQUIRE] ${video}: Finished in ${SECONDS} Seconds\n"
+fi

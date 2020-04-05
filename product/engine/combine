@@ -1,0 +1,13 @@
+video=${1-NcFVcihJHck}
+stime=${2-000}
+etime=${3-120}
+cache=$(realpath cache)
+tools=$(realpath tools)
+
+export SECONDS=0
+
+echo -e "[COMBINE] ${video}: Starting"
+
+python ${tools}/combine.py ${video} ${stime} ${etime} > /dev/null
+
+echo -e "[COMBINE] ${video}: Finished in ${SECONDS} Seconds\n"

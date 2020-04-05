@@ -73,34 +73,3 @@ for csv_file in glob(f'{cache}/{video}.classify.{stime}-{etime}.??.csv') :
                 })
 
     pd.DataFrame(rows).set_index('index').sort_index().to_csv(f'{cache}/{video}.combined.{stime}-{etime}.csv')
-
-"""
-    
-
-    nf          = pd.DataFrame(video, index = np.arange(cf.shape[0]), columns = ['video'])
-
-    nf['stamp'] = cf.micro.apply(lambda x : f'{int(x / 10 ** 6):03d}' )
-
-    nf.set_index('stamp')
-
-  # nf['stime'] = stime
-  # nf['etime'] = etime
-    nf['model'] = mmap[model]
-
-    print(nf)
-
-    for n, rank in enumerate(ranks) :
-
-        rs             = cf[rank].str.split(':')
-#       nf[f'text{n}'] = rl[0]
-        print(rs)
-        print(rs.index)
-
-    df          = pd.concat([df, nf])
-
-
-
-#df = df.sort_index()
-
-df.to_csv(f'{cache}/{video}.combined.{stime}-{etime}.csv', index = False)
-"""
