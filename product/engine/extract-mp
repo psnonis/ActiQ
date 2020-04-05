@@ -19,4 +19,6 @@ ${tools}/mp/bazel-bin/actiq/extract_mp \
 --input_side_packets=input_sequence_example=${cache}/${video}.metadata.${stime}-${etime}.pb \
 --output_side_packets=output_sequence_example=${cache}/${video}.features.${stime}-${etime}.pb > /dev/null
 
+rm ${cache}/${videp}.metadata.${stime}-${etime}.pb
+
 echo [EXTRACT] ${video}: Finished in ${SECONDS} Seconds

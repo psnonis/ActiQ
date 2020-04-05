@@ -1,7 +1,7 @@
-  clear
-# conda install pytorch torchvision cudatoolkit=10.1 -c pytorch
-
+    eval "$(conda shell.bash hook)"
+   conda activate sf
   export TF_CPP_MIN_LOG_LEVEL='2'
+   clear
 
   video=${1-btTKApmxrtk}
   stime=${2-000}
@@ -11,4 +11,5 @@
   extract-mp ${video} ${stime} ${etime}
   predict-mp ${video} ${stime} ${etime}
   predict-sf ${video} ${stime} ${etime}
+  predict-st ${video} ${stime} ${etime}
   combine.py ${video} ${stime} ${etime}

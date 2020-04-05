@@ -5,16 +5,17 @@ import pandas as pd
 from glob import glob
 from sys  import argv
 
-video = argv[1]
-stime = argv[2]
-etime = argv[3]
+video = argv[1] if len(argv) > 1 else 'NcFVcihJHck'
+stime = argv[2] if len(argv) > 1 else '000'
+etime = argv[3] if len(argv) > 1 else '120'
 
 tools = '/work/ActIQ/product/engine/tools'
 cache = '/work/ActIQ/product/engine/cache'
 
 cf    = pd.DataFrame()
+print(f'{cache}/{video}')
 
-for csv_file in glob(f'{cache}/{video}.classify.?.{stime}-{etime}.csv'):
+for csv_file in glob(f'{cache}/{video}.classify.??.{stime}-{etime}.csv'):
     
     print(f'Combining : {csv_file}')
     

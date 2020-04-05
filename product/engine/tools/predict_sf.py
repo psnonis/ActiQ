@@ -88,7 +88,7 @@ def overlay(config, labels, frame , predict_labels, boxes, palette, s, output) :
   # display the frame
     cv.imwrite(output, frame)
 
-def predict(config, labels, frames, csv, enabled) :
+def predict(config, labels, frames, csv, stime, etime, enabled) :
 
     np.random.seed(config.RNG_SEED)
     to.manual_seed(config.RNG_SEED)
@@ -248,6 +248,9 @@ def predict(config, labels, frames, csv, enabled) :
             segment_frames  = []
             segment_number += 1
 
+            if  int(frames.count / frames.video_r) >= etime :
+                break
+
     frames.clean()
 
 if  __name__ == '__main__' :
@@ -259,6 +262,8 @@ if  __name__ == '__main__' :
     parser.add_argument('--overlay', dest = f'overlay', default = False,  type =      bool)
     parser.add_argument('--video'  , dest = f'video'  , default =  None,  type =       str)
     parser.add_argument('--csv'    , dest = f'csv'    , default =    '',  type =       str)
+    parser.add_argument('--stime'  , dest = f'stime'  , default =     0,  type =       int)
+    parser.add_argument('--etime'  , dest = f'etime'  , default =   120,  type =       int)    
     parser.add_argument(  'option' ,                    default =  None, nargs = REMAINDER)
 
     parsed = parser.parse_args()
@@ -271,7 +276,7 @@ if  __name__ == '__main__' :
     labels = parsed.config.replace('.yaml', '.csv') if not parsed.labels else \
              parsed.labels
 
-    csv    = parsed.video.replace('.incoming.mp4', f'.classify.{"a" if config.DETECTION.ENABLE else "k"}.csv') if not parsed.csv else \
+    csv    = parsed.video.replace('.incoming.mp4', f'.classify.{"av" if config.DETECTION.ENABLE else "ki"}.csv') if not parsed.csv else \
              parsed.csv
 
-    predict(config = config, labels = labels, frames = frames, csv = csv, enabled = parsed.overlay)
+    predict(config = config, labels = labels, frames = frames, csv = csv, stime = parsed.stime, etime = parsed.etime, enabled = parsed.overlay)

@@ -4,19 +4,11 @@ etime=${3-120}
 cache=$(realpath cache)
 tools=$(realpath tools)
 clear
-export PYTHONPATH=${tools}/sf:${PYTHONPATH}
 export SECONDS=0
 
 echo [PREDICT] ${video}: Starting of SlowFast
 
-python ${tools}/prepare_sf.py ${video} ${stime} ${etime}            > /dev/null
-
-#python ${tools}/sf/tools/run_net.py --cfg ${tools}/sf_kinetics.yaml
- python ${tools}/sf/tools/run_net.py --cfg ${tools}/sf_ava.yaml
-
-echo $PWD
-
-#mv ${cache}/csv_out_k.csv   ${cache}/${video}.classify.${stime}-${etime}.sk.csv
-#mv ${cache}/csv_out_ava.csv ${cache}/${video}.classify.${stime}-${etime}.sa.csv
+python ${tools}/predict_sf.py --config ${tools}/sf_kinetics.yaml --video ${cache}/${video}.incoming.mp4 --stime ${stime} --etime ${etime} --csv ${cache}/${video}.classify.${stime}-${etime}.sk.csv
+python ${tools}/predict_sf.py --config ${tools}/sf_ava.yaml      --video ${cache}/${video}.incoming.mp4 --stime ${stime} --etime ${etime} --csv ${cache}/${video}.classify.${stime}-${etime}.sa.csv
 
 echo [PREDICT] ${video}: Finished in ${SECONDS} Seconds
