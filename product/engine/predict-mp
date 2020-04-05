@@ -14,4 +14,6 @@ ${tools}/mp/bazel-bin/actiq/predict_mp \
 --output_stream=annotation_summary \
 --output_stream_file=${cache}/${video}.classify.${stime}-${etime}.mp.csv > /dev/null
 
+rm ${cache}/${video}.features.${stime}-${etime}.pb
+
 echo [PREDICT] ${video}: Finished in ${SECONDS} Seconds

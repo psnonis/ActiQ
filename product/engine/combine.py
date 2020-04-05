@@ -1,32 +1,106 @@
 #!/usr/bin/env python
 
 import pandas as pd
+import numpy  as np
 
-from glob import glob
-from sys  import argv
+from glob    import glob
+from sys     import argv
+from os.path import splitext
+from os      import environ
 
-video = argv[1] if len(argv) > 1 else 'NcFVcihJHck'
-stime = argv[2] if len(argv) > 1 else '000'
-etime = argv[3] if len(argv) > 1 else '120'
+video = f'{argv[1]}' if len(argv) > 1 else 'NcFVcihJHck'
+stime = f'{argv[2]}' if len(argv) > 2 else '000'
+etime = f'{argv[3]}' if len(argv) > 3 else '120'
 
-tools = '/work/ActIQ/product/engine/tools'
-cache = '/work/ActIQ/product/engine/cache'
+tools = environ.get('tools', '/work/ActIQ/product/engine/tools')
+cache = environ.get('cache', '/work/ActIQ/product/engine/cache')
 
-cf    = pd.DataFrame()
-print(f'{cache}/{video}')
+df    = pd.DataFrame()
+ranks = [f'rank{n}' for n in range(10)]
 
-for csv_file in glob(f'{cache}/{video}.classify.??.{stime}-{etime}.csv'):
+mmap  = \
+{
+    'mp' : 'MediaPipe',
+    'sk' : 'SlowFastK',
+    'sa' : 'SlowFastA',
+    'st' : 'Subtitles'
+}
+
+row = \
+{
+    'video' : '',
+    'index' : '',
+    'model' : '',
+    'rank'  : '',
+    'prob'  : '',
+    'text'  : ''
+}
+
+rows = []
+
+
+for csv_file in glob(f'{cache}/{video}.classify.{stime}-{etime}.??.csv') :
     
-    print(f'Combining : {csv_file}')
-    
-    df          = pd.read_csv(csv_file, header = None)
-    df['model'] = csv_file.split('.classify.')[-1].split('.')[0]
-    df['video'] = video
-    df['start'] = stime
-    df['end'  ] = etime
-    
-    cf          = pd.concat(cf, df)
+    model       = csv_file.split(f'.classify.{stime}-{etime}.')[-1].split('.')[0]
 
-cf = cf.sort_index()
+    print(f'Combining : {csv_file} : {mmap[model]}')
+    
+    cf          = pd.read_csv(csv_file, names = ['micro'] + ranks).fillna('')
+    cf['stamp'] = cf.micro.apply(lambda x : f'{int(x / 10 ** 6):03d}')
+    cf['index'] = cf.stamp.apply(lambda x : f'{video}:{x}')
+    cf          = cf.set_index('index')
 
-cf.to_csv(f'cache/{video}.combined.csv')
+    for index, row in cf.T.iteritems() :
+
+        stamp = row['stamp']
+
+        for n, rank in enumerate(ranks) :
+            r     = (row[rank] + ':0.0').split(':')[:2]
+            t     = r[0].replace('unknown','').replace('???', '').strip().lower()
+            p     = f'{float(r[1]):4.2f}'
+
+            if  t != '' :
+
+                rows.append(
+                {
+                    'index' : index,
+                    'video' : video,
+                    'stamp' : stamp,
+                    'model' : mmap[model],
+                    'rank'  : n,
+                    'prob'  : p,
+                    'text'  : t
+                })
+
+    pd.DataFrame(rows).set_index('index').sort_index().to_csv(f'{cache}/{video}.combined.{stime}-{etime}.csv')
+
+"""
+    
+
+    nf          = pd.DataFrame(video, index = np.arange(cf.shape[0]), columns = ['video'])
+
+    nf['stamp'] = cf.micro.apply(lambda x : f'{int(x / 10 ** 6):03d}' )
+
+    nf.set_index('stamp')
+
+  # nf['stime'] = stime
+  # nf['etime'] = etime
+    nf['model'] = mmap[model]
+
+    print(nf)
+
+    for n, rank in enumerate(ranks) :
+
+        rs             = cf[rank].str.split(':')
+#       nf[f'text{n}'] = rl[0]
+        print(rs)
+        print(rs.index)
+
+    df          = pd.concat([df, nf])
+
+
+
+#df = df.sort_index()
+
+df.to_csv(f'{cache}/{video}.combined.{stime}-{etime}.csv', index = False)
+"""

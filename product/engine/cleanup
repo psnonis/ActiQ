@@ -1,2 +1,2 @@
-find . -name '.ipynb_checkpoints' -exec rm -rf {} \; > /dev/null
-find . -name '__pycache__'        -exec rm -rf {} \; > /dev/null
+find . -name '.ipynb_checkpoints' -exec rm -rf {} \; 2> /dev/null
+find . -name '__pycache__'        -exec rm -rf {} \; 2> /dev/null

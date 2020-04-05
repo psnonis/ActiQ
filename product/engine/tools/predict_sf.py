@@ -243,7 +243,7 @@ def predict(config, labels, frames, csv, stime, etime, enabled) :
             print()
 
             if  enabled :
-                overlay(config, labels, frame, predict_class, boxes, palette, time() - start, f'{csv.split(".classify")[0]}.overlays.{frames.count:04d}.jpg')
+                overlay(config, labels, frame, predict_class, boxes, palette, time() - start, f'{csv.split(".classify")[0]}.overlays.{frames.count:04d}.png')
 
             segment_frames  = []
             segment_number += 1
