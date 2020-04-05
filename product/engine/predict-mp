@@ -12,6 +12,6 @@ ${tools}/mp/bazel-bin/actiq/predict_mp \
 --calculator_graph_config_file=${tools}/predict_mp.pbtxt \
 --input_side_packets=input_sequence_example_path=${cache}/${video}.features.${stime}-${etime}.pb,input_video_path=${cache}/${video}.incoming.mp4,output_video_path=${cache}/${video}.outgoing.${stime}-${etime}.mp4,segment_size=5,overlap=4 \
 --output_stream=annotation_summary \
---output_stream_file=${cache}/${video}.classify.${stime}-${etime}.mp.csv > /dev/null
+--output_stream_file=${cache}/${video}.classify.${stime}-${etime}.m.csv > /dev/null
 
 echo [PREDICT] ${video}: Finished in ${SECONDS} Seconds

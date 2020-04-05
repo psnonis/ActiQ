@@ -1,37 +1,28 @@
-import os, sys
+from argparse import ArgumentParser, REMAINDER
+from os.path  import basename, splitext
+from time     import time, sleep
+from sys      import path
+from os       import environ, system
 
-tools = os.environ.get('tools', '')
-cache = os.environ.get('cache', '')
-sfast = os.environ.get('sfast', '')
+path += ['/work/ActIQ/product/engine/tools/sf']
 
-_     = sys.path.append(sfast)
+import pandas as pd
+import numpy  as np
+import torch  as to
+import cv2    as cv
 
-import numpy   as np
-import pandas  as pd
-import cv2     as cv
-import torch   as to
+from slowfast.config.defaults        import get_cfg as get_cfg_sf
+from slowfast.models                 import build_model
+from slowfast.utils.misc             import log_model_info
+from slowfast.utils.checkpoint       import load_checkpoint
+from slowfast.datasets.cv2_transform import scale, scale_boxes
 
 from detectron2        import model_zoo
 from detectron2.engine import DefaultPredictor
-from detectron2.config import get_cfg
+from detectron2.config import get_cfg as get_cfg_d2
 from detectron2.data   import MetadataCatalog
 
-from slowfast.utils                  import logging
-from slowfast.utils                  import misc
-from slowfast.models                 import build_model
-
-from slowfast.datasets.cv2_transform import scale, scale_boxes
-from slowfast.config.defaults        import get_cfg
-
-from time                            import time, sleep
-from os.path                         import basename
-from os                              import system
-
-import slowfast.utils.checkpoint      as cu
-import slowfast.utils.distributed     as du
-import slowfast.utils.multiprocessing as mu
-
-class VideoReader(object):
+class FrameProvider(object) :
 
     def __init__(self, file) :
 
@@ -40,7 +31,7 @@ class VideoReader(object):
         if  not self.cap.isOpened():
             raise IOError(f'Unable to Locate Video File : {file}')
 
-        self.video   = basename(file)
+        self.video   = splitext(basename(file))[0]
         self.video_w = int(self.cap.get(cv.CAP_PROP_FRAME_WIDTH ))
         self.video_h = int(self.cap.get(cv.CAP_PROP_FRAME_HEIGHT))
         self.video_c = int(self.cap.get(cv.CAP_PROP_FRAME_COUNT ))
@@ -56,345 +47,231 @@ class VideoReader(object):
 
         was_read, frame = self.cap.read()
 
-        if  not was_read : self.ended  = True
+        if  not was_read : self.ended  = True ; frame = None
         else             : self.count += 1
 
         print(f'\r{self.video_w}x{self.video_h}@{self.video_r} fps : {self.count:>4} / {self.video_c} : {self.count / self.video_c * 100 : 5.1f} % = ', end = '')
 
-        return was_read, frame
+        return frame
 
     def clean(self) :
 
         self.cap.release()
 
-def predict(batch) :
+def overlay(config, labels, frame , predict_labels, boxes, palette, s, output) :
 
-    pass
+    if  config.DETECTION.ENABLE and predict_labels and boxes.any() :
 
-def overlay_init() :
+        for box, box_labels in zip(boxes.astype(int), predict_labels) :
 
-    if  cfg.DETECTION.ENABLE:
-      # load object detector from detectron2
-        dtron2_cfg_file = cfg.DEMO.DETECTRON2_OBJECT_DETECTION_MODEL_CFG
-        dtron2_cfg      = get_cfg()
-        dtron2_cfg.merge_from_file(model_zoo.get_config_file(dtron2_cfg_file))
-        dtron2_cfg.MODEL.ROI_HEADS.SCORE_THRESH_TEST = .5
-        dtron2_cfg.MODEL.WEIGHTS = cfg.DEMO.DETECTRON2_OBJECT_DETECTION_MODEL_WEIGHTS
-        object_predictor = DefaultPredictor(dtron2_cfg)
-      # load the labels of AVA dataset
-        with open(cfg.DEMO.LABEL_FILE_PATH) as f:
-            labels = f.read().split('\n')[:-1]
-        palette = np.random.randint(64, 128, (len(labels), 3)).tolist()
-        boxes   = []
-
-        mode    = 'Detection'
-
-    else:
-      # load the labels of Kinectics-400 dataset
-        labels_df = pd.read_csv(cfg.DEMO.LABEL_FILE_PATH)
-        labels    = labels_df['name'].values
-
-        mode    = 'Classify'
-
-def overlay(batch) :
-
-    if  cfg.DETECTION.ENABLE and pred_labels and boxes.any():
-
-        for box, box_labels in zip(boxes.astype(int), pred_labels):
             cv.rectangle(frame, tuple(box[:2]), tuple(box[2:]), (0, 255, 0), thickness=2)
             label_origin = box[:2]
+
             for label in box_labels:
                 label_origin[-1] -= 5
                 (label_width, label_height), _ = cv.getTextSize(label, cv.FONT_HERSHEY_SIMPLEX, .5, 2)
-                cv.rectangle(
-                    frame, 
-                    (label_origin[0], label_origin[1] + 5), 
-                    (label_origin[0] + label_width, label_origin[1] - label_height - 5),
-                    palette[labels.index(label)], -1
-                )
-                cv.putText(
-                    frame, label, tuple(label_origin), 
-                    cv.FONT_HERSHEY_SIMPLEX, .5, (255, 255, 255), 1
-                )
+                cv.rectangle(frame, (label_origin[0], label_origin[1] + 5), (label_origin[0] + label_width, label_origin[1] - label_height - 5), palette[labels.index(label)], -1)
+                cv.putText(frame, label, tuple(label_origin), cv.FONT_HERSHEY_SIMPLEX, .5, (255, 255, 255), 1)
                 label_origin[-1] -= label_height + 5
 
-    if  not cfg.DETECTION.ENABLE:
-        # display predicted labels to frame
+    if  not config.DETECTION.ENABLE :
+      # display predicted labels to frame
         y_offset = 50
-        cv.putText(frame, 'Action:', (10, y_offset), 
-                            fontFace=cv.FONT_HERSHEY_SIMPLEX,
-                            fontScale=.65, color=(0, 235, 0), thickness=2)        
-        for pred_label in pred_labels:
+        cv.putText(frame, 'Action:', (10, y_offset), fontFace = cv.FONT_HERSHEY_SIMPLEX, fontScale = .65, color = (0, 235, 0), thickness = 2)
+
+        for predict_label in predict_labels :
             y_offset += 30
-            cv.putText(frame, '{}'.format(pred_label), (20, y_offset), 
-                        fontFace=cv.FONT_HERSHEY_SIMPLEX,
-                        fontScale=.65, color=(0, 235, 0), thickness=2)
+            cv.putText(frame, f'{predict_label}', (20, y_offset), fontFace = cv.FONT_HERSHEY_SIMPLEX, fontScale = .65, color = (0, 235, 0), thickness = 2)
 
   # display prediction speed
-    cv.putText(frame, f'Speed: {s:.2f}s', (10, 25), 
-                fontFace  = cv.FONT_HERSHEY_SIMPLEX,
-                fontScale = .65,
-                color     = (0, 235, 0),
-                thickness = 2)
+    cv.putText(frame, 'Speed: {:.2f}s'.format(s), (10, 25), fontFace = cv.FONT_HERSHEY_SIMPLEX, fontScale = .65, color = (0, 235, 0), thickness = 2)
   # display the frame
-    cv.imwrite('', frame)   
+    cv.imwrite(output, frame)
 
-def process(cfg, video) :
+def predict(config, labels, frames, csv, enabled) :
 
-    np.random.seed(cfg.RNG_SEED)
-    to.manual_seed(cfg.RNG_SEED)
+    np.random.seed(config.RNG_SEED)
+    to.manual_seed(config.RNG_SEED)
 
-    model = build_model(cfg)
+  # print(config)
 
-    if  cfg.TRAIN.CHECKPOINT_FILE_PATH != '' :
+    np.random.seed(config.RNG_SEED)
+    to.manual_seed(config.RNG_SEED)
 
-        cu.load_checkpoint(
-            cfg.TRAIN.CHECKPOINT_FILE_PATH,
+    model = build_model(config)
+    model.eval()
+
+  # log_model_info(model)
+
+    if  config.TRAIN.CHECKPOINT_FILE_PATH != '' :
+
+        load_checkpoint(
+            config.TRAIN.CHECKPOINT_FILE_PATH,
             model,
-            cfg.NUM_GPUS > 1,
+            config.NUM_GPUS > 1,
             None,
             inflation           = False,
-            convert_from_caffe2 = cfg.TRAIN.CHECKPOINT_TYPE == 'caffe2',
+            convert_from_caffe2 = config.TRAIN.CHECKPOINT_TYPE == 'caffe2',
         )
 
-    else                                     : raise NotImplementedError('Unable to Locate Model Checkpoint')
+    else                                        : raise NotImplementedError('Unable to Locate Model Checkpoint')
 
-    seq_len     = cfg.DATA.NUM_FRAMES * cfg.DATA.SAMPLING_RATE
-    frames      = []
-    pred_labels = []
-    s           = 0.
+    if  config.DETECTION.ENABLE :
 
-    batch_count = 0
-    batch       = []
+      # load object detector from detectron2
+        cfg_d2                                   = get_cfg_d2()
+        cfg_d2.merge_from_file(model_zoo.get_config_file('COCO-Detection/faster_rcnn_R_50_FPN_3x.yaml'))
+        cfg_d2.MODEL.ROI_HEADS.SCORE_THRESH_TEST = .5
+        cfg_d2.MODEL.WEIGHTS                     = 'detectron2://COCO-Detection/faster_rcnn_R_50_FPN_3x/137849458/model_final_280758.pkl'
+        object_predictor                         = DefaultPredictor(cfg_d2)
 
-    labels      = pd.read_csv(f'{tools}/sf-depends/kinetics/labels.csv')['name'].values
-  
-    system('clear')
-    print(f'Starting Video Analysis')
-    print(len(labels), cfg.DETECTION.ENABLE)
+      # load the labels of AVA dataset
+        labels  = pd.read_csv(labels)['name'].values.tolist()
+    else :
+      # load the labels of Kinectics-400 dataset
+        labels  = pd.read_csv(labels)['name'].values
 
-    for able_to_read, frame in video:
+    threshold      = .01
+    boxes          = []
+    palette        = np.random.randint(64, 128, (len(labels), 3)).tolist()
+    segment_number = 0
+    segment_length = config.DATA.NUM_FRAMES * config.DATA.SAMPLING_RATE
+    segment_frames = []
+    predict_labels = []
 
-        if  not able_to_read:
-          # when reaches the end frame, clear the buffer and continue to the next one.
-            frames = []
+    rows           = []
+
+    for frame in frames :
+
+        if  frame is None :
             break
 
-        if  len(frames) != seq_len :
+        if  len(segment_frames) != segment_length : # collect segment frames
 
             frame_processed = cv.cvtColor(frame, cv.COLOR_BGR2RGB)
-            frame_processed = scale(cfg.DATA.TEST_CROP_SIZE, frame_processed)
-            frames.append(frame_processed)
+            frame_processed = scale(config.DATA.TEST_CROP_SIZE, frame_processed)
+            segment_frames.append(frame_processed)
 
-            if  cfg.DETECTION.ENABLE and len(frames) == seq_len // 2 - 1 :
-                mid_frame = frame
+            if  config.DETECTION.ENABLE and len(segment_frames) == segment_length // 2 - 1 :
 
-        if  len(frames) == seq_len :
+                frame_mid = frame
+            
+        if  len(segment_frames) == segment_length : # predict segment
 
             start = time()
 
-            if  cfg.DETECTION.ENABLE :
+            if  config.DETECTION.ENABLE :
 
-                outputs        = object_predictor(mid_frame)
-                fields         = outputs['instances']._fields
+                output         = object_predictor(frame_mid)
+                fields         = output['instances']._fields
                 pred_classes   = fields['pred_classes']
                 selection_mask = pred_classes == 0
               # acquire person boxes
                 pred_classes   = pred_classes[selection_mask]
                 pred_boxes     = fields['pred_boxes'].tensor[selection_mask]
-                scores         = fields['scores'][selection_mask]
-                boxes          = scale_boxes(cfg.DATA.TEST_CROP_SIZE, pred_boxes, video.video_h, video.video_w)
+                scores         = fields['scores'    ][selection_mask]
+                boxes          = scale_boxes(config.DATA.TEST_CROP_SIZE, pred_boxes, frames.video_h, frames.video_w)
                 boxes          = to.cat([to.full((boxes.shape[0], 1), float(0)).cuda(), boxes], axis = 1)
 
-            inputs = to.as_tensor(frames).float()
+            inputs = to.as_tensor(segment_frames).float()
             inputs = inputs / 255.0
+            inputs = inputs - to.tensor(config.DATA.MEAN) # perform color normalization
+            inputs = inputs / to.tensor(config.DATA.STD)
+            inputs = inputs.permute(3, 0, 1, 2)           # T H W C -> C T H W
+            inputs = inputs.unsqueeze(0)                  # 1 C T H W
 
-            inputs = inputs - to.tensor(cfg.DATA.MEAN) # perform color normalization
-            inputs = inputs / to.tensor(cfg.DATA.STD )
+            index  = to.linspace(0,  inputs.shape[2] - 1, config.DATA.NUM_FRAMES                  ).long() # sample frames for the fast pathway
+            fast_p = to.index_select(inputs, 2, index)
 
-            inputs = inputs.permute(3, 0, 1, 2)        # T H W C -> C T H W  
-            inputs = inputs.unsqueeze(0)               # 1 C T H W
+            index  = to.linspace(0,  fast_p.shape[2] - 1, fast_p.shape[2] // config.SLOWFAST.ALPHA).long() # sample frames for the slow pathway
+            slow_p = to.index_select(fast_p, 2, index)
 
-          # sample frames for the fast pathway
-            index  = to.linspace(0, inputs.shape[2] - 1, cfg.DATA.NUM_FRAMES).long()
-            path_f = to.index_select(inputs, 2, index)
-
-          # sample frames for the slow pathway
-            index  = to.linspace(0, path_f.shape[2] - 1, path_f.shape[2] // cfg.SLOWFAST.ALPHA).long()
-            path_s = to.index_select(path_f, 2, index)
-
-          # print(f'fast_pathway.shape={path_f.shape}')
-          # print(f'slow_pathway.shape={path_s.shape}')
+          # print(f'fast_p.shape={fast_p.shape}')
+          # print(f'slow_p.shape={slow_p.shape}')
 
           # transfer the data to the current GPU device
 
-            inputs = [path_s, path_f]
+            inputs = [slow_p, fast_p]
 
-            tprep  = time() - start
-            start  = time()
+            for i in range(len(inputs)) :
+                inputs[i] = inputs[i].cuda(non_blocking = True)
 
-            for n, path in enumerate(inputs) :
-                inputs[n] = path.cuda(non_blocking = True)
+          # perform the forward pass
 
-            tload  = time() - start
-            start  = time()
+            if  config.DETECTION.ENABLE :
+                if not len(boxes) : predict_score = to.tensor([])        # when there is nothing in the scene, use a dummy variable to disable all computations below
+                else              : predict_score = model(inputs, boxes)
+            else                  : predict_score = model(inputs)
 
-          # perform the forward pass.
+            if  config.DETECTION.ENABLE :
 
-            if  cfg.DETECTION.ENABLE :
-                if  not len(boxes)   : pass # preds = to.tensor([])        # when there is nothing in the scene, use a dummy variable to disable all computations below
-                else                 : pass # preds = model(inputs, boxes)
-            else                     : preds = model(inputs)
+              # this post processing was intendedly assigned to the cpu since my laptop GPURTX 2080 runs out of its memory, if your GPU is more powerful, I'd recommend to change this section to make CUDA does the processing.
+                predict_score = predict_score.cpu().detach().numpy()
+                predict_masks = predict_score > threshold                                         # predicted probs > threshold
 
-            tpred  = time() - start
+                predict_probs = [pbox[mask] for pbox, mask in zip(predict_score, predict_masks) ] # predicted probs
+                predict_pflat = [prob       for pbox in predict_probs for prob in pbox          ] # predicted probs flat
 
-            print(f'prep {tprep:5.1f}, load {tload:5.1f}, pred {tpred:5.1f}')
-            print(len(label_ids))
+                predict_index = [np.nonzero(predict_mask)[0] for predict_mask in predict_masks  ] # predicted class index
+                predict_class = [[labels[id] for id in box_clids] for box_clids in predict_index] # predicted class label
+                predict_cflat = [ labels[id] for box_clids in predict_index for id in box_clids ] # predicted class label flat
+                predict_iflat = [        id  for box_clids in predict_index for id in box_clids ] # predicted class index flat
 
-            label_ids   = to.nonzero(preds.squeeze() > .1).reshape(-1).cpu().detach().numpy()
-            print(label_ids)
-            pred_labels = labels[label_ids]
+              # unsure how to detectron2 rescales boxes to image original size, so use input boxes of slowfast and rescale back it instead, it's safer and even if boxes was not rescaled by cv2_transform.rescale_boxes, it still works
+                boxes = boxes.cpu().detach().numpy()
+                ratio = np.min([frames.video_h, frames.video_w]) / config.DATA.TEST_CROP_SIZE
+                boxes = boxes[:, 1:] * ratio
 
-            print(*pred_labels, sep = ', ')
+            else :
 
+                predict_index = to.nonzero(predict_score.squeeze() > threshold).reshape(-1).cpu().detach().numpy()
+                predict_probs = \
+                predict_pflat = predict_score[predict_score > threshold].cpu().detach().numpy()
+                predict_cflat = \
+                predict_class = labels[predict_index]
 
-            #pred_labels = labels[label_ids]
+            micros  = int(frames.count / frames.video_r * 10 ** 6)
+            ranked  = [f'{c}:{p}' for p, c in sorted(zip(predict_pflat, predict_cflat), reverse = True)][:10]
+            ranked  = ranked + ['unknown:0.0'] * (10 - len(ranked))
+            rows   += [[micros] + ranked]
 
-            # if  cfg.DETECTION.ENABLE:
-            #   # this post processing was intendedly assigned to the cpu since my laptop GPU
-            #   # RTX 2080 runs out of its memory, if your GPU is more powerful, I'd recommend
-            #   # to change this section to make CUDA does the processing
-            #     preds = preds.cpu().detach().numpy()
-            #     pred_masks = preds > .1
-            #     label_ids = [np.nonzero(pred_mask)[0] for pred_mask in pred_masks]
-            #     pred_labels = [
-            #         [labels[label_id] for label_id in perbox_label_ids]
-            #         for perbox_label_ids in label_ids
-            #     ]
-            #   # unsure how to detectron2 rescales boxes to image original size, so I use
-            #   # input boxes of slowfast and rescale back it instead, it's safer and even if boxes
-            #   # was not rescaled by cv2_transform.rescale_boxes, it still works
-            #     boxes = boxes.cpu().detach().numpy()
-            #     ratio = np.min(
-            #         [video.video_h, video.video_w]
-            #     ) / cfg.DATA.TEST_CROP_SIZE
-            #     boxes = boxes[:, 1:] * ratio
+            pd.DataFrame(rows).to_csv(csv, index = False, header = False)
 
-            # else:
+            print(f'{micros} uS')
+            for n, x in enumerate(ranked) :
+                print(n, x)
+            print()
 
-            #     # option 1: single label inference selected from the highest probability entry.
-            #     # label_id = preds.argmax(-1).cpu()
-            #     # pred_label = labels[label_id]
-            #     # option 2: multi-label inferencing selected from probability entries > threshold
+            if  enabled :
+                overlay(config, labels, frame, predict_class, boxes, palette, time() - start, f'{csv.split(".classify")[0]}.overlays.{frames.count:04d}.jpg')
 
-            #     label_ids   = to.nonzero(preds.squeeze() > .1).reshape(-1).cpu().detach().numpy()
-            #     pred_labels = labels[label_ids]
+            segment_frames  = []
+            segment_number += 1
 
-            #   # logger.info(pred_labels)
-            #     print(*pred_labels, sep = ', ')
+    frames.clean()
 
-            #     if  not list(pred_labels):
-            #         pred_labels = ['Unknown']
+if  __name__ == '__main__' :
 
-            # # option 1: remove the oldest frame in the buffer to make place for the new one.
-            # # frames.pop(0)
-            # # option 2: empty the buffer
+    parser = ArgumentParser(description = 'ActIQ SlowFast Prediction Pipeline')
 
-            frames = []
-            s      = time() - start
+    parser.add_argument('--config' , dest = f'config' , default =    '',  type =       str)
+    parser.add_argument('--labels' , dest = f'labels' , default =    '',  type =       str)
+    parser.add_argument('--overlay', dest = f'overlay', default = False,  type =      bool)
+    parser.add_argument('--video'  , dest = f'video'  , default =  None,  type =       str)
+    parser.add_argument('--csv'    , dest = f'csv'    , default =    '',  type =       str)
+    parser.add_argument(  'option' ,                    default =  None, nargs = REMAINDER)
 
-      # overlay()
+    parsed = parser.parse_args()
+    config = get_cfg_sf()
+    frames = FrameProvider(parsed.video)
 
-    video.clean()
+    if  parsed.config : config.merge_from_file(parsed.config)
+    if  parsed.option : config.merge_from_list(parsed.option)
 
-def arg_parse() :
+    labels = parsed.config.replace('.yaml', '.csv') if not parsed.labels else \
+             parsed.labels
 
-    from argparse import ArgumentParser, REMAINDER
+    csv    = parsed.video.replace('.incoming.mp4', f'.classify.{"a" if config.DETECTION.ENABLE else "k"}.csv') if not parsed.csv else \
+             parsed.csv
 
-    '''
-    Parse the following arguments for the video training and testing pipeline.
-    Args:
-        shard_id (int): shard id for the current machine. Starts from 0 to
-            num_shards - 1. If single machine is used, then set shard id to 0.
-        num_shards (int): number of shards using by the job.
-        init_method (str): initialization method to launch the job with multiple
-            devices. Options includes TCP or shared file-system for
-            initialization. details can be find in
-            https://pyto.org/docs/stable/distributed.html#tcp-initialization
-        cfg (str): path to the config file.
-        opts (argument): provide addtional options from the command line, it
-            overwrites the config loaded from file.
-        '''
-
-    par = ArgumentParser(
-        description='Provide SlowFast video training, testing, and demo pipeline.'
-    )
-
-    par.add_argument(
-        '--conf',
-        dest    = f'conf',
-        help    = f'Path to the config file',
-        default = f'{sfast}/demo/Kinetics/SLOWFAST_8x8_R50.yaml',
-        type    = str,
-    )
-
-    par.add_argument(
-        '--file',
-        dest    = f'file',
-        help    = f'Path to the video file',
-        default = f'{cache}/btTKApmxrtk.incoming.mp4',
-        type    = str,
-    )
-
-
-    par.add_argument(
-        'opts',
-        help    ='See slowfast/config/defaults.py for all options',
-        default = None,
-        nargs   = REMAINDER,
-    )
-
-    return par.parse_args()
-
-def cfg_load(arg):
-
-    '''
-    Given the arguemnts, load and initialize the configs.
-    Args:
-        arg (argument): `conf`, and `opts`.
-    '''
-
-  # setup cfg.
-
-    cfg = get_cfg()
-
-  # load config from cfg.
-
-    if  arg.conf is not None:
-        cfg.merge_from_file(arg.conf)
-    
-  # load config from command line, overwrite config from opts.
-
-    if  arg.opts is not None:
-        cfg.merge_from_list(arg.opts)
-
-  # create the checkpoint dir.
-
-    cu.make_checkpoint_dir(cfg.OUTPUT_DIR)
-
-    return cfg
-
-def main():
-
-    arg = arg_parse()
-    cfg = cfg_load(arg)
-
-    mp4 = VideoReader(file = arg.file)
-
-    process(cfg = cfg, video = mp4)
-
-if  __name__ == '__main__':
-
-  # to.multiprocessing.set_start_method('forkserver')
-
-    main()
+    predict(config = config, labels = labels, frames = frames, csv = csv, enabled = parsed.overlay)
