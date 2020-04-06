@@ -13,10 +13,10 @@ GetAPIEndpoint = (type, resource) =>
 {
     const servers =
     [
-        { _id : '158.175.150.58', pythia : true, speech : true },
+        { _id : '169.60.164.52', engine : true },
     ]
 
-    if (type == 'pythia')
+    if (type == 'engine')
     {
         var server  = servers[0]._id
         var port    = '5000'
@@ -67,18 +67,18 @@ fake = [r1, r2, r3, r4]
 
 Meteor.methods(
 {
-    api_queryIndex_fake : async function (params)
+    api_queryFakes : async function (params)
     {
-        console.log('server > main > api_queryIndex_fake called')
+        console.log('server > main > api_queryFakes called')
         console.log(`params > ${JSON.stringify(params, null, 4)}`)
 
-        if (params.query)
+        if (params.terms)
         {
             Captures.remove({})
 
-            var result = params.query == 'swimming at beach' ? r1 :
-                         params.query == 'playing billiards' ? r2 :
-                         params.query == 'taking a bath'     ? r3 : r4
+            var result = params.terms == 'swimming at beach' ? r1 :
+                         params.terms == 'playing billiards' ? r2 :
+                         params.terms == 'taking a bath'     ? r3 : r4
 
             await new Promise(resolve => setTimeout(resolve, 1000))
     
@@ -90,70 +90,53 @@ Meteor.methods(
             })
 
             return result
-    
-            /*
-            var uri       = GetAPIEndpoint('pythia', 'getAnswers')
+        }
+
+        throw new Meteor.Error(501, 'Error 501 : Invalid API Params', 'Invalid API Params')
+    },
+
+    api_queryIndex : async function (params)
+    {
+        console.log('server > main > api_queryIndex called')
+        console.log(`params > ${JSON.stringify(params, null, 4)}`)
+
+        if (params.terms)
+        {
+            Captures.remove({})
+
+            var uri       = GetAPIEndpoint('engine', 'queryIndex')
 
             let response  = await superagent.post(uri)
-            .query({ question : params.query})
+            .query({ terms : params.terms, 
+                     knobs : params.knobs })
 
-            Captures.update({ _id : params.user }, { $set : { question : params.query, answer : response.body.image.answer, picture : params.image, createdAt : new Date() } }, { upsert : true })
-
-            console.log(`server > main > api_queryIndex_fake return : ${JSON.stringify(response.body, null, 2)}`)
+            console.log(`server > main > api_queryIndex return : ${JSON.stringify(response.body, null, 2)}`)
 
             return response.body
-            */
         }
 
         throw new Meteor.Error(501, 'Error 501 : Invalid API Params', 'Invalid API Params')
     },
 
-    api_getAnswers_group : async function (params) // Need To Write This Function
+    api_queueCache : async function (params)
     {
-        console.log('server > main > api_getAnswers_group called')
-      //console.log(params)
+        console.log('server > main > api_queueCache called')
+        console.log(`params > ${JSON.stringify(params, null, 4)}`)
 
-        if (params.query)
+        if (params.video)
         {
-            var uri       = GetAPIEndpoint('pythia', 'getAnswers')
+            var uri       = GetAPIEndpoint('engine', 'queueCache')
 
-            console.log(`server > main > api_getAnswers_group return : ${response.text}`)
+            let response  = await superagent.post(uri)
+            .query({ video : params.video, 
+                     stime : params.stime,
+                     etime : params.etime })
+
+            console.log(`server > main > api_queueCache return : ${JSON.stringify(response.body, null, 2)}`)
 
             return response.body
         }
 
         throw new Meteor.Error(501, 'Error 501 : Invalid API Params', 'Invalid API Params')
-    },
-
-    api_getInterpretation : async function (params)
-    {
-        console.log('server > main > api_askQuestion called')
-      //console.log(params)
-
-        var uri       = GetAPIEndpoint('speech', 'interpret') // TODO: rename interpret to speech and getInterpretation
-        var sample    = '../../../../../public/sample_audio.wav' // The Birch Canoe
-        var temporary = 'audio.wav'
-               
-        let stringLength = params.audio.length
-        let newString    = params.audio.slice(22, stringLength) // Remove 'data:audio/wav;base64,'
-        var audio        = Buffer.from(newString, 'base64') // CONFIRMED WORKING
-
-        writeFileSync(temporary, audio) // save audio to file
-
-        var sampleAudio = readFileSync(sample)
-        console.log(sampleAudio)
-
-        var writtenAudio = readFileSync(temporary)
-        console.log(writtenAudio)
-
-        // let response  = await superagent.post(url)
-        // .attach('audio',  sample)
-
-        let response = await superagent.post(uri)
-        .attach('audio',  temporary)
-      
-        console.log(`server > main > api_askQuestion return : ${response.text}`)
-
-        return response.body
-    }
+    },    
 })

@@ -58,7 +58,7 @@ export default class QueriesCard extends React.Component
       <Container id="QueriesRoot" style={css.root}>
         <QuizBox style={css.box}
                  context={this.props.context}
-                 question={this.state.question}
+                 terms={this.state.terms}
                  onTypeText={this.onTypeText}
                  onClickAsk={this.onClickAsk} />
       </Container>
@@ -75,7 +75,7 @@ export default class QueriesCard extends React.Component
     this.ready = true
     this.state = 
     {
-      question : 'swimming at beach'
+      terms : 'swimming at beach'
     }
   }
 
@@ -91,21 +91,22 @@ export default class QueriesCard extends React.Component
 
       console.log(`client > Queries > queryIndex`)
 
-      var   question = this.state.question
+      var terms = this.state.terms
+      var knobs = {}
 
-      console.log('client > Queries > queryIndex : callin api_queryIndex_fake')
+      console.log('client > Queries > queryIndex : callin api_queryIndex')
   
       Session.set(  'FIRST', false)
       Session.set('RESULTS',  null)
 
-      Meteor.call('api_queryIndex_fake', { query : question }, (err, res) =>
+      Meteor.call('api_queryIndex', { terms : terms, knobs : knobs }, (err, res) =>
       {
-        console.log('client > Queries > queryIndex : return api_queryIndex_fake')
+        console.log('client > Queries > queryIndex : return api_queryIndex')
 
         if (err) console.log(`ERR => ${err}`)
         if (res) console.log(`RES => ${JSON.stringify(res, null, 4)}`)
 
-        Session.set('RESULTS', res ? res : null)
+        Session.set('RESULTS', res ? res.result : null)
 
         this.ready = true
       })
@@ -123,6 +124,6 @@ export default class QueriesCard extends React.Component
   {
     console.log(`client > Queries > onTypeText`)
 
-    this.setState({ question : e.target.value })
+    this.setState({ terms : e.target.value })
   }
 }
