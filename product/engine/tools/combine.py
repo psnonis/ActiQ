@@ -4,7 +4,7 @@ import pandas as pd
 import numpy  as np
 
 from glob    import glob
-from sys     import argv
+from sys     import argv, stderr
 from os.path import splitext
 from os      import environ
 
@@ -38,14 +38,16 @@ row = \
 
 rows = []
 
-
 for csv_file in glob(f'{cache}/{video}.classify.{stime}-{etime}.??.csv') :
+
+    with open(csv_file, 'r') as f: data = f.read()
+    with open(csv_file, 'w') as f: f.write(data.replace(', ', ' ').replace(': ', ' '))
     
     model       = csv_file.split(f'.classify.{stime}-{etime}.')[-1].split('.')[0]
 
     print(f'Combining : {csv_file} : {mmap[model]}')
     
-    cf          = pd.read_csv(csv_file, names = ['micro'] + ranks).fillna('')
+    cf          = pd.read_csv(csv_file, names = ['micro'] + ranks).fillna('unkown:0.00')
     cf['stamp'] = cf.micro.apply(lambda x : f'{int(x / 10 ** 6):03d}')
     cf['index'] = cf.stamp.apply(lambda x : f'{video}:{x}')
     cf          = cf.set_index('index')
@@ -55,21 +57,32 @@ for csv_file in glob(f'{cache}/{video}.classify.{stime}-{etime}.??.csv') :
         stamp = row['stamp']
 
         for n, rank in enumerate(ranks) :
-            r     = (row[rank] + ':0.0').split(':')[:2]
-            t     = r[0].replace('unknown','').replace('???', '').strip().lower()
-            p     = f'{float(r[1]):4.2f}'
 
-            if  t != '' :
+                r     = row[rank]
+                r     = r.split(':')
 
-                rows.append(
-                {
-                    'index' : index,
-                    'video' : video,
-                    'stamp' : stamp,
-                    'model' : mmap[model],
-                    'rank'  : n,
-                    'prob'  : p,
-                    'text'  : t
-                })
+                if  len(r) < 2 :
+                    stderr.write(f'{csv_file} {r}\n')
+                    continue
+                
+                t     = r[0].replace('unknown','').replace('???', '').strip().lower()
+                p     = f'{float(r[1]):4.2f}'
 
-    pd.DataFrame(rows).set_index('index').sort_index().to_csv(f'{cache}/{video}.combined.{stime}-{etime}.csv')
+                if  t != '' :
+
+                    rows.append(
+                    {
+                        'index' : index,
+                        'video' : video,
+                        'stamp' : stamp,
+                        'model' : mmap[model],
+                        'rank'  : n,
+                        'prob'  : p,
+                        'text'  : t
+                    })
+
+    if  rows :
+        pd.DataFrame(rows).set_index('index').sort_index().to_csv(f'{cache}/{video}.combined.{stime}-{etime}.csv')
+    else     :
+        raise Exception('Empty Rows')
+

@@ -1,6 +1,6 @@
     eval "$(conda shell.bash hook)"
    conda activate base --no-stack
-   clear
+  #clear
 
   video=${1-btTKApmxrtk}
   stime=${2-000}

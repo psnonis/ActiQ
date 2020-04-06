@@ -4,7 +4,7 @@ tools=$(realpath tools)
 
 SECONDS=0
 
-echo [ACQUIRE] ${video}: Starting
+echo -e "[ACQUIRE] ${video}: Starting"
 
 if [ -s ${cache}/${video}.incoming.mp4 ]
 then

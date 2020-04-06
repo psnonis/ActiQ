@@ -8,14 +8,18 @@ export SECONDS=0
 
 echo -e "[PREDICT] ${video}: Starting of Subtitles"
 
-cat ${cache}/${video}.incoming.en.vtt \
-| sed -e '/webvtt/d' -e '/kind: captions/d' -e '/language: en/d' -e '/^\s*$/d' \
-| sed -e 's/<[^>]*>//g' \
-| sed -e 's/, / /g' -e 's/,/ /g' \
-| sed -e 's/ align:.*%//g' -e 's/ --> .*/,/' \
-| tr -d '[]' \
-| tr '[:upper:]' '[:lower:]' \
-| python ${tools}/predict_st.py \
-> ${cache}/${video}.classify.${stime}-${etime}.st.csv
+if  [ ! -s ${cache}/${video}.incoming.en.vtt ]
+then
+    echo -e "[PREDICT] ${video}: Skipping in ${SECONDS} Seconds\n"
+else
+    cat ${cache}/${video}.incoming.en.vtt \
+    | sed -e 's/<[^>]*>//g' \
+    | sed -e 's/, / /g' -e 's/,/ /g' \
+    | sed -e 's/ align:.*%//g' -e 's/ --> .*/,/' \
+    | tr -d '[]' \
+    | tr '[:upper:]' '[:lower:]' \
+    | python ${tools}/predict_st.py \
+    > ${cache}/${video}.classify.${stime}-${etime}.st.csv
 
-echo -e "[PREDICT] ${video}: Finished in ${SECONDS} Seconds\n"
+    echo -e "[PREDICT] ${video}: Finished in ${SECONDS} Seconds\n"
+fi
