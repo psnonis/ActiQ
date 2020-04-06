@@ -5,20 +5,10 @@ y=$(ls ${cache}/*.classify.*.csv | sed -r 's:(.*)/(.*).classify.(...)-(...)(.*):
 
 for x in $y
 do
-
-  echo $x
   v=$(echo $x|cut -d, -f1)
   s=$(echo $x|cut -d, -f2)
   e=$(echo $x|cut -d, -f3)
-  echo $v $s $e
-done
 
-exit
+  process $v $s $e
 
-for x in y
-do
-  x=$(basename ${x})
-  x=${x/.*}
-
-  process ${x}
 done
