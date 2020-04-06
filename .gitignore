@@ -1,3 +1,6 @@
+__pycache__
+.ipynb_checkpoint
+
 dataset/yt8m/2/
 dataset/yt8m/3/
 dataset/yt8m/video/
