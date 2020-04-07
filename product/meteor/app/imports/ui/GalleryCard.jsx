@@ -3,6 +3,8 @@ import { Captures    } from '/imports/api/captures'
 
 import React           from 'react'
 
+import YouTube         from 'react-youtube'
+
 import Container       from '@material-ui/core/Container'
 import Paper           from '@material-ui/core/Paper'
 import Grid            from '@material-ui/core/Grid'
@@ -72,6 +74,8 @@ class GalleryPart extends React.Component
   {
     console.log(hit)
 
+    // https://www.npmjs.com/package/react-youtube
+
     var link = `https://www.youtube.com/embed/${hit.video}`
     var trim = `start=${hit.start}&end=${hit.end}`
     var opts = 'enablejsapi=1&origin=http://actiq.biz&rel=0&modestbranding=1&autohide=1&showinfo=0&controls=0&autoplay=1&playsinline=1&iv_load_policy=3'
@@ -97,7 +101,7 @@ class GalleryPart extends React.Component
               {table.clips.map(hit => (
                 <GridListTile key={hit.rank} style={{width:640, height:360, padding:0}}>
                   <iframe style={css.tube} type='text/html' width='640' height='360' allow='autoplay' frameBorder='0' src={this.getYTLink(hit)}></iframe>
-                  <GridListTileBar style={css.title} titlePosition='top' title={hit.terms} subtitle={hit.query} actionIcon={<IconButton style={css.icon}></IconButton>} />
+                  <GridListTileBar style={css.title} titlePosition='bottom' title={`Rank ${hit.rank} : ${hit.video}`} subtitle={hit.match} actionIcon={<IconButton style={css.icon}><StarBorderIcon/></IconButton>} />
                 </GridListTile>
               ))}
             </GridList>

@@ -74,18 +74,30 @@ class Index(object):
 
         clips = []
 
-        masks = [self.dbase['texts'].str.contains(term) for term in terms.split()]
-        hits  =  self.dbase[np.logical_and.reduce(masks)]
+        tempo = self.dbase[self.dbase.model !linear-gradient(to bottom, #cb60b3 0%,#c146a1 50%,#a80077 51%,#db36a4 100%)= 'Subtitles'] if not knobs['subtitles'] else \
+                self.dbase
+        
+        masks = [tempo['texts'].str.contains(term.lower()) for term in terms.strip().split()]
+
+        hits  =  tempo[np.logical_and.reduce(masks)] if knobs['all_terms'] else \
+                 tempo[ np.logical_or.reduce(masks)]
 
         first = hits.groupby('video').stamp.min()
+        media = hits.groupby('video').stamp.median()
 
-        print(first)
+        model = hits.groupby('video').model.unique()
 
-        for n, (video, start) in enumerate(first.items(), 1):
+        print(model)
 
-            clips.append({'rank' : n, 'video' : video, 'start' : start, 'end' : start + 30, 'model' : '?', 'match' : '?', 'probability' : 0.95 })
+        for video, start in first.items():
 
-        return clips
+            clips.append({ 'rank' : len(clips) + 1, 'video' : video, 'start' : start, 'end' : start + 30, 'model' : 'first', 'match' : '?', 'probability' : 0.95 })
+
+        for video, start in media.items():
+
+            clips.append({ 'rank' : len(clips) + 1, 'video' : video, 'start' : start, 'end' : start + 30, 'model' : 'media', 'match' : '?', 'probability' : 0.95 })
+
+        return clips[:5]
 
     def viniSearch(self, terms, knobs):
 

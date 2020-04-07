@@ -18,3 +18,30 @@ body
     background: linear-gradient(to bottom, #0b8793, #360033);
     background: linear-gradient(to bottom, #b6fbff, #83a4d4);
 }
+
+/* ::-webkit-scrollbar
+{
+  height : 12px;               
+  width  : 8px;               
+  border : 1px solid #ff0000;
+  background : magenta;
+} */
+
+::-webkit-scrollbar {
+    height: 16px;
+    background: black;
+}
+ 
+::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3); 
+    border-radius: 10px;
+}
+ 
+::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5);
+
+    background: radial-gradient(ellipse at center, #a90329 0%,#8f0222 44%,#6d0019 100%);
+    background: radial-gradient(ellipse at center, #fefcea 0%,#f1da36 100%);
+    background: linear-gradient(to bottom, #cb60b3 0%,#c146a1 50%,#a80077 51%,#db36a4 100%);
+}

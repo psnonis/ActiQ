@@ -38,6 +38,12 @@ const useStyles = makeStyles(theme => (
     marginTop       : 8,
     backgroundColor : primary
   },
+
+  link :
+  {
+    color : 'white'
+  },
+
   snackbar :
   {
     [theme.breakpoints.down('xs')] :
@@ -57,9 +63,9 @@ export default function DisplayLine()
                       onChange={(event, newValue) => {setValue(newValue)}}
                       className={cls.root}
                       showLabels>
-        <BottomNavigationAction label="Recents"   icon={<RestoreIcon    />} />
-        <BottomNavigationAction label="Favorites" icon={<FavoriteIcon   />} />
-        <BottomNavigationAction label="Nearby"    icon={<LocationOnIcon />} />
+        <BottomNavigationAction className={cls.link} label='Recents'   icon={<RestoreIcon   />} />
+        <BottomNavigationAction className={cls.link} label='Favorites' icon={<FavoriteIcon  />} />
+        <BottomNavigationAction className={cls.link} label='Nearby'    icon={<LocationOnIcon/>} />
     </BottomNavigation>      
   )
 }

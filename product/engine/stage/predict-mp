@@ -38,5 +38,5 @@ else
     --output_stream_file=${cache}/${video}.classify.${stime}-${etime}.mp.csv && \
     rm ${cache}/${video}.features.${stime}-${etime}.pb > /dev/null
 
-    echo -e "[PREDICT] ${video}: Finished in ${SECONDS} Seconds -Baseline\n"
+    echo -e "[PREDICT] ${video}: Finished in ${SECONDS} Seconds - Baseline\n"
 fi

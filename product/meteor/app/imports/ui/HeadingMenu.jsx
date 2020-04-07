@@ -67,12 +67,12 @@ export default function HeadingMenu()
 
   return (
     <React.Fragment>
-    <Grid id="HeadingRoot" className={cls.root}>
-      <AppBar position="static" className={cls.bar}>
+    <Grid id='HeadingRoot' className={cls.root}>
+      <AppBar position='static' className={cls.bar}>
         <Toolbar>
-            <IconButton edge="start" className={cls.menu} color="inherit" aria-label="menu"><MenuIcon                 /></IconButton>
-            <Typography variant="h6" className={cls.title}                                 >Video Activity Search Engine</Typography>
-            <IconButton edge="end"   className={cls.import} color="inherit"                ><Badge badgeContent={4} color="secondary"><AddIcon     /></Badge></IconButton>
+            <IconButton edge='start' className={cls.menu}   color='inherit' aria-label='menu'><MenuIcon/></IconButton>
+            <Typography variant='h6' className={cls.title}  color='inherit'                  >Video Activity Search Engine</Typography>
+            <IconButton edge='end'   className={cls.import} color='inherit'                  ><Badge badgeContent={4} color='secondary'><AddIcon/></Badge></IconButton>
         </Toolbar>
       </AppBar>
     </Grid>
