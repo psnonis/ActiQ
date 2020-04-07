@@ -18,11 +18,13 @@ else
     cat ${cache}/${video}.incoming.en.vtt \
     | sed -e 's/<[^>]*>//g' \
     | sed -e 's/, / /g' -e 's/,/ /g' \
-    | sed -e 's/ align:.*%//g' -e 's/ --> .*/,/' \
-    | tr -d '[]' \
+    | sed -e 's/ align:.*%//g' -e 's/ --> .*//' \
     | tr '[:upper:]' '[:lower:]' \
-    | python ${tools}/predict_st.py \
-    > ${cache}/${video}.classify.${stime}-${etime}.st.csv
+    | tr -cd '[:alnum:]:. \n' \
+    | iconv -f UTF-8 -t ASCII//TRANSLIT \
+    | sed -e '/^\s*$/d' \
+    | python ${tools}/caption.py \
+    > ${cache}/${video}.classify.${stime}-${etime}.en.csv
 
     echo -e "[CAPTION] ${video}: Finished in ${SECONDS} Seconds\n"
 fi

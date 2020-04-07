@@ -56,7 +56,9 @@ import os
 import csv
 import json
 import dateutil.parser
+import pandas as pd
 from base64 import b64encode
+import unidecode
 
 
 def main(file_path, delimiter, max_rows, elastic_index, json_struct, datetime_field, elastic_type, elastic_address, ssl, username, password, id_column):
@@ -65,7 +67,10 @@ def main(file_path, delimiter, max_rows, elastic_index, json_struct, datetime_fi
       max_rows_disp = "all"
     else:
       max_rows_disp = max_rows
-
+    
+    df = pd.read_csv(file_path)
+    df['id']=df.index
+    df.to_csv(file_path)
     print("")
     print(" ----- CSV to ElasticSearch ----- ")
     print("Importing %s rows into `%s` from '%s'" % (max_rows_disp, elastic_index, file_path))
@@ -104,6 +109,8 @@ def main(file_path, delimiter, max_rows, elastic_index, json_struct, datetime_fi
                         _data = _data.replace('"%' + header + '%"', row[pos])
                     if header == "stamp":
                          _data = _data.replace('"%' + header + '%"', str(int(row[pos])))
+#                     if header == "text":
+#                         _data = _data.replace('"%' + header + '%"', str(unidecode.unidecode(row[pos])))
                     else:
                         try:
                             int(row[pos])
@@ -163,8 +170,9 @@ def send_to_elastic(elastic_address, endpoint, ssl, username, password, to_elast
             line=1 # skip header 
             for i in response_details['items']:
                 line=line+1
-                if i['index']['status'] != 201:
+                if i['index']['status'] != 200:
                     print("\n*** Problem on line {}: {}".format(block+line,i['index']['error']))
+                    # print(i['index']['status'])
             print ("\n*** Error occured during import. See response body above. ***\n")
         else:
             print ("Import of {} items was successful.".format(len(response_details['items'])))

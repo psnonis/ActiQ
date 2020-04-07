@@ -1,10 +1,11 @@
-import whoosh as     wh
-import pandas as     pd
-import numpy  as     np
+import whoosh  as     wh
+import pandas  as     pd
+import numpy   as     np
 
-from   glob   import glob
-from   time   import time, sleep
-from   os     import environ, system
+from   glob    import glob
+from   time    import time, sleep
+from   os.path import basename, splitext
+from   os      import environ, system
 
 class Index(object):
 
@@ -17,10 +18,8 @@ class Index(object):
 
         self.folder = folder
 
-        self.dbase  = pd.DataFrame()
-        self.fbase  = pd.DataFrame()
-
-        self.count  = 0
+        self.combo  = pd.DataFrame()
+        self.flats  = pd.DataFrame()
 
         self.buildIndex()
 
@@ -30,12 +29,16 @@ class Index(object):
         build index of video segments
         """
 
-        self.dbase = pd.concat([pd.read_csv(c) for c in glob(f'{self.folder}/*.collects.*.csv')]).fillna('').set_index('index') # 10 labels per row - aggregate
-        self.fbase = pd.concat([pd.read_csv(c) for c in glob(f'{self.folder}/*.combined.*.csv')]).fillna('').set_index('index') #  1 label  per row - flat list
+        self.combo = pd.concat([pd.read_csv(c, sep = '\t') for c in glob(f'{self.folder}/*.combined.*.tsv')]).fillna('').set_index('index') # 10 labels per row
 
-        self.count = self.dbase.shape[0]
+        print(f'Combined Index Contains {self.combo.shape[0]} Entries')
 
-        print(f'Index Contains {self.count} Entries')
+        self.flats = pd.concat([pd.read_csv(c, sep = '\t') for c in glob(f'{self.folder}/*.flatlist.*.tsv')]).fillna('').set_index('index') #  1 label  per row
+
+        for c in glob(f'{self.folder}/*.flatlist.*.tsv'):
+            print(splitext(basename(c))[0], '*' if pd.read_csv(c).shape[1] != 7 else ' ', pd.read_csv(c).shape[1], pd.read_csv(c).shape[0])
+
+        print(f'FlatList Index Contains {self.flats.shape[0]} Entries')
 
     def queryIndex(self, terms, knobs):
 
@@ -74,9 +77,9 @@ class Index(object):
 
         clips = []
 
-        tempo = self.dbase[self.dbase.model !linear-gradient(to bottom, #cb60b3 0%,#c146a1 50%,#a80077 51%,#db36a4 100%)= 'Subtitles'] if not knobs['subtitles'] else \
-                self.dbase
-        
+        tempo = self.combo[self.combo.model != 'Subtitles'] if not knobs['subtitles'] else \
+                self.combo
+
         masks = [tempo['texts'].str.contains(term.lower()) for term in terms.strip().split()]
 
         hits  =  tempo[np.logical_and.reduce(masks)] if knobs['all_terms'] else \

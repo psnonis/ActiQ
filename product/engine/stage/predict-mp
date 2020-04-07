@@ -16,7 +16,7 @@ echo -e "[PREDICT] ${video}: Starting of MediaPipe"
 
 if [ -s ${cache}/${video}.classify.${stime}-${etime}.mp.csv ]
 then
-    echo -e "[PREDICT] ${video}: Skipping in ${SECONDS} Seconds - Baseline\n"
+    echo -e "[PREDICT] ${video}: Skipping in ${SECONDS} Seconds - YouTube8M\n"
 else
 
     python ${tools}/extract_mp.py \
@@ -38,5 +38,5 @@ else
     --output_stream_file=${cache}/${video}.classify.${stime}-${etime}.mp.csv && \
     rm ${cache}/${video}.features.${stime}-${etime}.pb > /dev/null
 
-    echo -e "[PREDICT] ${video}: Finished in ${SECONDS} Seconds - Baseline\n"
+    echo -e "[PREDICT] ${video}: Finished in ${SECONDS} Seconds - YouTube8M\n"
 fi

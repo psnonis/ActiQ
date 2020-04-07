@@ -1,0 +1,13 @@
+#!/bin/bash
+
+for i in /work/ActIQ/product/engine/cache/*.combined.*.csv
+    do
+        python csv_to_elastic.py \
+            --elastic-address 'localhost:9200' \
+            --csv-file $i \
+            --elastic-index 'actiq' \
+            --elastic-type "video" \
+            --datetime-field=dateField \
+            --delimiter ',' \
+            --json-struct '{"ind" : "%name%", "video" : "%video%", "stamp" : "%stamp%", "model" : "%model%", "rank"  : "%rank%","prob"  : "%prob%", "text"  : "%text%"}'
+    done

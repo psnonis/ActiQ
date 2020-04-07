@@ -32,39 +32,6 @@ GetAPIEndpoint = (type, resource) =>
     }
 }
 
-morning = 'JH3iid1bZ1Q'
-evening = 'btTKApmxrtk'
-
-r1  = { query : 'swimming at beach',
-        clips : [
-            { rank : 1, video : morning, start : 223, end : 227, model : 'mp-baseline', terms : 'swimming, beach, kids', probability : 0.97 },
-            { rank : 2, video : morning, start : 144, end : 150, model : 'mp-baseline', terms : 'swimming, beach, girl', probability : 0.94 }
-        ]
-    }
-
-r2  = { query : 'playing billiards',
-        clips : [
-                    { rank : 1, video : morning, start :   0, end : 30, model : 'mp-baseline', terms : 'swimming, beach, kids', probability : 0.97 },
-                    { rank : 2, video : morning, start :  40, end : 35, model : 'mp-baseline', terms : 'swimming, beach, girl', probability : 0.94 },
-                    { rank : 3, video : morning, start :  55, end : 75, model : 'mp-baseline', terms : 'swimming, rocks, kids', probability : 0.92 }
-                ]
-    }
-
-r3  = { query : 'taking a bath',
-        clips : [
-                    { rank : 1, video : morning, start : 0, end : 30, model : 'mp-baseline', terms : 'swimming, beach, kids', probability : 0.9 },
-                    { rank : 2, video : morning, start : 0, end : 30, model : 'mp-baseline', terms : 'swimming, beach, kids', probability : 0.9 }
-                ]
-    }
-
-r4  = { query : 'snorkeling underwater',
-        clips : [
-                    { rank : 1, video : evening, start : 0, end : 30, model : 'mp-baseline', terms : 'underwater, snorkle, child', probability : 0.9 }
-                ]
-    }
-
-fake = [r1, r2, r3, r4]
-
 Meteor.methods(
 {
     api_queryIndex : async function (params)

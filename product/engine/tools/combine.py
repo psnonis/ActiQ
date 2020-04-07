@@ -18,12 +18,12 @@ cache = environ.get('cache', '/engine/cache')
 df    = pd.DataFrame()
 ranks = [f'rank{n}' for n in range(10)]
 
-mmap  = \
+names = \
 {
-    'mp' : 'MediaPipe',
-    'sk' : 'SlowFastK',
-    'sa' : 'SlowFastA',
-    'st' : 'Subtitles'
+    'mp' : 'MP-YouTube8M',
+    'sk' : 'SF-Kinetics',
+    'sa' : 'SF-AVA',
+    'en' : 'CC-English'
 }
 
 rows = []
@@ -34,11 +34,15 @@ for csv_file in glob(f'{cache}/{video}.classify.{stime}-{etime}.??.csv') :
     with open(csv_file, 'r') as f: data = f.read()
     with open(csv_file, 'w') as f: f.write(data.replace(', ', ' ').replace(': ', ' '))
     
-    model       = mmap[csv_file.split(f'.classify.{stime}-{etime}.')[-1].split('.')[0]]
+    tag = csv_file.split(f'.classify.{stime}-{etime}.')[-1].split('.')[0]
+
+    if  tag in names :
+        model        = names[tag]
+    else             : continue
 
     print(f'Combining : {csv_file} : {model}')
     
-    cf          = pd.read_csv(csv_file, names = ['micro'] + ranks).fillna('unkown:0.00')
+    cf          = pd.read_csv(csv_file, names = ['micro'] + ranks).fillna('unknown:0.00')
     cf['stamp'] = cf.micro.apply(lambda x : f'{int(x / 10 ** 6):03d}')
     cf['index'] = cf.stamp.apply(lambda x : f'{video}:{x}')
     cf          = cf.set_index('index')
@@ -94,8 +98,8 @@ for csv_file in glob(f'{cache}/{video}.classify.{stime}-{etime}.??.csv') :
 
         rows.append(entry)
 
-    if  flat : pd.DataFrame(flat).set_index('index').sort_index().to_csv(f'{cache}/{video}.combined.{stime}-{etime}.csv') # TODO : change to flatlist
+    if  flat : pd.DataFrame(flat).set_index('index').sort_index().to_csv(f'{cache}/{video}.flatlist.{stime}-{etime}.tsv', sep = '\t') # TODO : change to flatlist
     else     : raise Exception('Flat is Empty')
 
-    if  rows : pd.DataFrame(rows).set_index('index').sort_index().to_csv(f'{cache}/{video}.collects.{stime}-{etime}.csv') # TODO : change to combined
+    if  rows : pd.DataFrame(rows).set_index('index').sort_index().to_csv(f'{cache}/{video}.combined.{stime}-{etime}.tsv', sep = '\t') # TODO : change to combined
     else     : raise Exception('Rows is Empty')

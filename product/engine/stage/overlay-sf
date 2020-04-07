@@ -4,7 +4,7 @@ eval "$(conda shell.bash hook)" && setup="conda activate --no-stack" && ${setup}
 
 video=${1-btTKApmxrtk}
 stime=${2-000}
-etime=${3-120}
+etime=${3-600}
 
 cache=$(realpath cache)
 tools=$(realpath tools)

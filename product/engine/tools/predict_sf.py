@@ -4,12 +4,15 @@ from time     import time, sleep
 from sys      import path
 from os       import environ, system
 
-path += ['/engine/tools/sf']
-
 import pandas as pd
 import numpy  as np
 import torch  as to
 import cv2    as cv
+
+tools = environ.get('tools', '/engine/tools')
+cache = environ.get('cache', '/engine/cache')
+
+path += [f'{tools}/sf']
 
 from slowfast.config.defaults        import get_cfg as get_cfg_sf
 from slowfast.models                 import build_model
@@ -128,10 +131,10 @@ def predict(config, labels, frames, csv, stime, etime, enabled) :
         object_predictor                         = DefaultPredictor(cfg_d2)
 
       # load the labels of AVA dataset
-        labels  = pd.read_csv(labels)['name'].values.tolist()
+        labels = labels.tolist()
     else :
       # load the labels of Kinectics-400 dataset
-        labels  = pd.read_csv(labels)['name'].values
+        labels = labels
 
     threshold      = .01
     boxes          = []
@@ -277,8 +280,8 @@ if  __name__ == '__main__' :
     if  parsed.config : config.merge_from_file(parsed.config)
     if  parsed.option : config.merge_from_list(parsed.option)
 
-    labels = parsed.config.replace('.yaml', '.csv') if not parsed.labels else \
-             parsed.labels
+    labels = pd.read_csv(parsed.config.replace('.yaml', '.txt'), header = None, names = ['label'])['label'].values if not parsed.labels else \
+             pd.read_csv(parsed.labels                         , header = None, names = ['label'])['label'].values
 
     csv    = parsed.video.replace('.incoming.mp4', f'.classify.{"av" if config.DETECTION.ENABLE else "ki"}.csv') if not parsed.csv else \
              parsed.csv
