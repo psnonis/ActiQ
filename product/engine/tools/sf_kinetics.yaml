@@ -5,7 +5,7 @@ TRAIN:
   EVAL_PERIOD: 10
   CHECKPOINT_PERIOD: 1
   AUTO_RESUME: True
-  CHECKPOINT_FILE_PATH: "/work/ActIQ/product/engine/tools/sf-depends/kinetics/SLOWFAST_8x8_R50.pkl"
+  CHECKPOINT_FILE_PATH: "/engine/tools/sf-depends/kinetics/SLOWFAST_8x8_R50.pkl"
   CHECKPOINT_TYPE: caffe2
 DATA:
   NUM_FRAMES: 20
@@ -62,4 +62,4 @@ DATA_LOADER:
 NUM_GPUS: 1
 NUM_SHARDS: 1
 RNG_SEED: 0
-OUTPUT_DIR: "/work/ActIQ/product/engine/cache"
+OUTPUT_DIR: "/engine/cache"

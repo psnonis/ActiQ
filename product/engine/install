@@ -1,3 +1,5 @@
+[ "$PWD" != "/engine" ] && echo "[FAILURE] Please Run From '/engine' Directory" && exit
+
 pip install torch torchvision cython fvcore
 pip install detectron2 -f https://dl.fbaipublicfiles.com/detectron2/wheels/cu101/index.html
 pip install opencv-python simplejson pycocotools

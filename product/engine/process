@@ -1,18 +1,15 @@
-    eval "$(conda shell.bash hook)"
-   conda activate base --no-stack
-  #clear
+[ "$PWD" != "/engine" ] && echo "[FAILURE] Please Run From '/engine' Directory" && exit
 
-  video=${1-btTKApmxrtk}
-  stime=${2-000}
-  etime=${3-120}
+video=${1-btTKApmxrtk}
+stime=${2-000}
+etime=${3-600}
 
-  acquire    ${video}                   # acquire video
+cache=$(realpath cache)
+tools=$(realpath tools)
+stage=$(realpath stage)
 
-    conda activate mp --no-stack
-  predict-mp ${video} ${stime} ${etime} # predict mediapipe
-
-    conda activate sf --no-stack
-  predict-sf ${video} ${stime} ${etime} # predict slowfast
-
-  predict-st ${video} ${stime} ${etime} # predict subtitle
-  combine    ${video} ${stime} ${etime} # combine csv
+${stage}/acquire    ${video}                   # acquire video
+${stage}/predict-mp ${video} ${stime} ${etime} # predict mediapipe
+${stage}/predict-sf ${video} ${stime} ${etime} # predict slowfast
+${stage}/caption    ${video} ${stime} ${etime} # predict subtitle
+${stage}/combine    ${video} ${stime} ${etime} # combine csv

@@ -1,6 +1,9 @@
-video=${1-NcFVcihJHck}
+[ "$PWD" != "/engine" ] && echo "[FAILURE] Please Run From '/engine' Directory" && exit
+
+video=${1-btTKApmxrtk}
 stime=${2-000}
 etime=${3-120}
+
 cache=$(realpath cache)
 tools=$(realpath tools)
 

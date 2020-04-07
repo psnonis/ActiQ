@@ -1,16 +1,19 @@
-video=${1-NcFVcihJHck}
+[ "$PWD" != "/engine" ] && echo "[FAILURE] Please Run From '/engine' Directory" && exit
+
+video=${1-btTKApmxrtk}
 stime=${2-000}
 etime=${3-120}
+
 cache=$(realpath cache)
 tools=$(realpath tools)
 
 export SECONDS=0
 
-echo -e "[PREDICT] ${video}: Starting of Subtitles"
+echo -e "[CAPTION] ${video}: Starting of Subtitles"
 
 if  [ ! -s ${cache}/${video}.incoming.en.vtt ]
 then
-    echo -e "[PREDICT] ${video}: Skipping in ${SECONDS} Seconds\n"
+    echo -e "[CAPTION] ${video}: Skipping in ${SECONDS} Seconds\n"
 else
     cat ${cache}/${video}.incoming.en.vtt \
     | sed -e 's/<[^>]*>//g' \
@@ -21,5 +24,5 @@ else
     | python ${tools}/predict_st.py \
     > ${cache}/${video}.classify.${stime}-${etime}.st.csv
 
-    echo -e "[PREDICT] ${video}: Finished in ${SECONDS} Seconds\n"
+    echo -e "[CAPTION] ${video}: Finished in ${SECONDS} Seconds\n"
 fi

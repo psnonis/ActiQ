@@ -1,5 +1,7 @@
-cache=/work/ActIQ/product/engine/cache
-tools=/work/ActIQ/product/engine/tools
+[ "$PWD" != "/engine" ] && echo "[FAILURE] Please Run From '/engine' Directory" && exit
+
+cache=/engine/cache
+tools=/engine/tools
 
 y=$(ls ${cache}/*.classify.*.csv | sed -r 's:(.*)/(.*).classify.(...)-(...)(.*):\2,\3,\4:' | sort | uniq)
 

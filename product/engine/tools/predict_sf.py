@@ -4,7 +4,7 @@ from time     import time, sleep
 from sys      import path
 from os       import environ, system
 
-path += ['/work/ActIQ/product/engine/tools/sf']
+path += ['/engine/tools/sf']
 
 import pandas as pd
 import numpy  as np
@@ -87,6 +87,8 @@ def overlay(config, labels, frame , predict_labels, boxes, palette, s, output) :
     cv.putText(frame, 'Speed: {:.2f}s'.format(s), (10, 25), fontFace = cv.FONT_HERSHEY_SIMPLEX, fontScale = .65, color = (0, 235, 0), thickness = 2)
   # display the frame
     cv.imwrite(output, frame)
+
+    print(f'- {output}')
 
 def predict(config, labels, frames, csv, stime, etime, enabled) :
 
@@ -235,15 +237,17 @@ def predict(config, labels, frames, csv, stime, etime, enabled) :
             ranked  = ranked + ['unknown:0.0'] * (10 - len(ranked))
             rows   += [[micros] + ranked]
 
-            pd.DataFrame(rows).to_csv(csv, index = False, header = False)
-
             print(f'{micros} uS')
+
             for n, x in enumerate(ranked) :
                 print(n, x)
-            print()
 
             if  enabled :
                 overlay(config, labels, frame, predict_class, boxes, palette, time() - start, f'{csv.split(".classify")[0]}.overlays.{frames.count:04d}.png')
+            else        :
+                pd.DataFrame(rows).to_csv(csv, index = False, header = False)
+
+            print()
 
             segment_frames  = []
             segment_number += 1

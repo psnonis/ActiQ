@@ -1,6 +1,11 @@
-video=${1-NcFVcihJHck}
+[ "$PWD" != "/engine" ] && echo "[FAILURE] Please Run From '/engine' Directory" && exit
+
+eval "$(conda shell.bash hook)" && setup="conda activate --no-stack" && ${setup} sf
+
+video=${1-btTKApmxrtk}
 stime=${2-000}
 etime=${3-120}
+
 cache=$(realpath cache)
 tools=$(realpath tools)
 
@@ -19,7 +24,7 @@ else
     --video ${cache}/${video}.incoming.mp4 \
     --stime ${stime} \
     --etime ${etime} \
-    --csv ${cache}/${video}.classify.${stime}-${etime}.sk.csv > /dev/null
+    --csv   ${cache}/${video}.classify.${stime}-${etime}.sk.csv > /dev/null
 
     echo -e "[PREDICT] ${video}: Finished in ${SECONDS} Seconds - Kinetics"
 
@@ -36,7 +41,7 @@ else
     --video ${cache}/${video}.incoming.mp4 \
     --stime ${stime} \
     --etime ${etime} \
-    --csv ${cache}/${video}.classify.${stime}-${etime}.sa.csv > /dev/null
+    --csv   ${cache}/${video}.classify.${stime}-${etime}.sa.csv > /dev/null
 
     echo -e "[PREDICT] ${video}: Finished in ${SECONDS} Seconds - AVA\n"
 

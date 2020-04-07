@@ -1,0 +1,23 @@
+[ "$PWD" != "/engine" ] && echo "[FAILURE] Please Run From '/engine' Directory" && exit
+
+eval "$(conda shell.bash hook)" && setup="conda activate --no-stack" && ${setup} sf
+
+video=${1-btTKApmxrtk}
+stime=${2-000}
+etime=${3-120}
+
+cache=$(realpath cache)
+tools=$(realpath tools)
+
+SECONDS=0
+
+echo [OVERLAY] ${video}: Starting
+
+python ${tools}/predict_sf.py --config ${tools}/sf_ava.yaml \
+--video ${cache}/${video}.incoming.mp4 \
+--stime ${stime} \
+--etime ${etime} \
+--csv   ${cache}/${video}.classify.${stime}-${etime}.sa.csv  \
+--overlay True
+
+echo [OVERLAY] ${video}: Finished in ${SECONDS} Seconds
