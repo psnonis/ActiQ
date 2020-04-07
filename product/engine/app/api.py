@@ -2,6 +2,7 @@
 
 import   click as     cli
 from      time import time
+from      json import loads
 from     flask import Flask, Response, jsonify, request
 from  waitress import serve
 from     index import Index
@@ -74,8 +75,9 @@ def api_queryIndex():
 
     request.get_data()
 
-    terms = request.args.get('terms')
-    knobs = request.args.get('knobs')
+    terms =       request.args.get('terms')
+    knobs = loads(request.args.get('knobs'))
+
     data  = request.data
 
     if  terms :
