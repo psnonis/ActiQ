@@ -4,6 +4,7 @@ import HeadingMenu from './HeadingMenu'
 import QueriesCard from './QueriesCard'
 import ResultsCard from './ResultsCard'
 import GalleryCard from './GalleryCard'
+import DisplayLine from './DisplayLine'
 
 import Container   from '@material-ui/core/Container'
 
@@ -26,6 +27,7 @@ const InquirePage = () =>
       <QueriesCard id="QueriesCard" context={context}/>
       <ResultsCard id="ResultsCard" context={context}/>
       <GalleryCard id="GalleryCard" context={context}/>
+      <DisplayLine id="GoodbyeLine" context={context}/>
   </Container>
 )
 

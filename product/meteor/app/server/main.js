@@ -67,34 +67,6 @@ fake = [r1, r2, r3, r4]
 
 Meteor.methods(
 {
-    api_queryFakes : async function (params)
-    {
-        console.log('server > main > api_queryFakes called')
-        console.log(`params > ${JSON.stringify(params, null, 4)}`)
-
-        if (params.terms)
-        {
-            Captures.remove({})
-
-            var result = params.terms == 'swimming at beach' ? r1 :
-                         params.terms == 'playing billiards' ? r2 :
-                         params.terms == 'taking a bath'     ? r3 : r4
-
-            await new Promise(resolve => setTimeout(resolve, 1000))
-    
-            console.log(`result > ${JSON.stringify(result, null, 4)}`)
-    
-            result.clips.forEach( clip =>
-            {
-                Captures.insert(clip)
-            })
-
-            return result
-        }
-
-        throw new Meteor.Error(501, 'Error 501 : Invalid API Params', 'Invalid API Params')
-    },
-
     api_queryIndex : async function (params)
     {
         console.log('server > main > api_queryIndex called')
@@ -107,8 +79,8 @@ Meteor.methods(
             var uri       = GetAPIEndpoint('engine', 'queryIndex')
 
             let response  = await superagent.post(uri)
-            .query({ terms : params.terms, 
-                     knobs : params.knobs })
+            .query({ terms : params.terms,
+                     knobs : JSON.stringify(params.knobs) })
 
             console.log(`server > main > api_queryIndex return : ${JSON.stringify(response.body, null, 2)}`)
 

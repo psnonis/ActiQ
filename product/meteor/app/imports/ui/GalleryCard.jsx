@@ -65,7 +65,7 @@ class GalleryPart extends React.Component
   {
     super(props)
 
-    console.log(`client > Results > constr : ${JSON.stringify(this.props)}`)
+    console.log(`client > Gallery > constr : ${JSON.stringify(this.props)}`)
   }
 
   getYTLink = (hit) =>
@@ -82,22 +82,22 @@ class GalleryPart extends React.Component
 
   render = () =>
   {
-    const results = this.props.results
-    const first   = this.props.first
+    const table = this.props.table
+    const first = this.props.first
+    const error = this.props.error
 
-    console.log(`client > Gallery > render : RESULTS = ${JSON.stringify(results)}`)
+    console.log(`client > Gallery > render : TABLE = ${JSON.stringify(table)}`)
 
-    if (results && results.clips)
+    if (table && table.clips)
     {
       return (
         <Paper style={css.top}>
           <Grid style={css.root}>
             <GridList style={css.list} cols={2.5}>
-              {results.clips.map(hit => (
+              {table.clips.map(hit => (
                 <GridListTile key={hit.rank} style={{width:640, height:360, padding:0}}>
-                  <iframe style={css.tube} type="text/html" width="640" height="360" allow="autoplay" frameBorder="0"
-                          src={this.getYTLink(hit)}></iframe>
-                  <GridListTileBar style={css.title} titlePosition="top" title={hit.terms} subtitle={hit.query} actionIcon={<IconButton style={css.icon}></IconButton>} />
+                  <iframe style={css.tube} type='text/html' width='640' height='360' allow='autoplay' frameBorder='0' src={this.getYTLink(hit)}></iframe>
+                  <GridListTileBar style={css.title} titlePosition='top' title={hit.terms} subtitle={hit.query} actionIcon={<IconButton style={css.icon}></IconButton>} />
                 </GridListTile>
               ))}
             </GridList>
@@ -114,6 +114,13 @@ class GalleryPart extends React.Component
           </Paper>
         )
       }
+      else if (error)
+      {
+        return (
+            <Paper style={css.roo}>
+            </Paper>
+          )          
+      }
       else
       {
         return (
@@ -127,10 +134,11 @@ class GalleryPart extends React.Component
 
 export default GalleryCard = withTracker(() =>
 {
-  let results = Session.get('RESULTS')
-  let first   = Session.get('FIRST'  )
+  let table = Session.get('TABLE')
+  let first = Session.get('FIRST')
+  let error = Session.get('ERROR')
   
-  console.log(`client > Gallery > trackr : RESULTS = ${results}, FIRST = ${first}`)
+  console.log(`client > Gallery > trackr : TABLE = ${table}, FIRST = ${first}, ERROR = ${error}`)
 
-  return { results : results, first : first }
+  return { table : table, first : first, error : error }
 })(GalleryPart)

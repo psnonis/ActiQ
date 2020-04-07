@@ -5,10 +5,12 @@ import InputBase      from '@material-ui/core/InputBase'
 import Divider        from '@material-ui/core/Divider'
 import IconButton     from '@material-ui/core/IconButton'
 import MicIcon        from '@material-ui/icons/Mic'
-import CameraAltIcon  from '@material-ui/icons/CameraAlt'
+import YouTubeIcon    from '@material-ui/icons/YouTube'
 import SearchIcon     from '@material-ui/icons/Search'
-import MessageIcon    from '@material-ui/icons/Message'
-import WallpaperIcon  from '@material-ui/icons/Wallpaper'
+
+import YoutubeSearchedForIcon from '@material-ui/icons/YoutubeSearchedFor';
+import ClosedCaptionIcon      from '@material-ui/icons/ClosedCaption';
+
 
 import { makeStyles } from '@material-ui/core/styles'
 import { primary,
@@ -31,18 +33,20 @@ const useStyles = makeStyles(
     flex       : 1,
   },
 
-  cam :
+  opt :
   {
+    color           : primary
   },
 
-  mic :
+  sub :
   {
+    color           : primary
   },
   
   ask :
   {
-  //backgroundColor : primary,
-    color           : primary
+    color           : primary,
+    fontSize        : 'large'
   },  
 
   sep :
@@ -61,11 +65,11 @@ export default function QuizBox(props, hey) {
 
   return (
     <Paper        className={cls.root}>
-      <IconButton className={cls.cam}  onClick={(e) => props.onClickCam(e)}><CameraAltIcon /></IconButton>
-      <InputBase  className={cls.txt} onChange={(e) => props.onTypeText(e)} placeholder="Ask a Question" value={props.question} />
-      <IconButton className={cls.mic}  onClick={(e) => props.onClickMic(e)}><MicIcon       /></IconButton>
+      <IconButton className={cls.opt}  onClick={(e) => props.onClickOpt(e)}><YouTubeIcon      /></IconButton>
+      <InputBase  className={cls.txt} onChange={(e) => props.onTypeText(e)} placeholder={props.place} value={props.terms} />
+      <IconButton className={cls.sub}  onClick={(e) => props.onClickSub(e)}><ClosedCaptionIcon/></IconButton>
       <Divider    className={cls.sep} />
-      <IconButton className={cls.ask}  onClick={(e) => props.onClickAsk(e)}><SearchIcon    /></IconButton>
+      <IconButton className={cls.ask}  onClick={(e) => props.onClickAsk(e)}><SearchIcon       /></IconButton>
     </Paper>
   )
 }

@@ -51,8 +51,9 @@ const theme = createMuiTheme({
 
 Meteor.startup(() =>
 {
-  Session.set('RESULTS', null)
-  Session.set('FIRST',   true)
+  Session.set('TABLE',  null)
+  Session.set('FIRST',  true)
+  Session.set('ERROR', false)
 
   render( <ThemeProvider theme={theme}>
             <Router />

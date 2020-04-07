@@ -1,7 +1,6 @@
 import React           from 'react'
 import Say             from 'react-say'
 
-
 import Card            from '@material-ui/core/Card'
 import CardActionArea  from '@material-ui/core/CardActionArea'
 import CardActions     from '@material-ui/core/CardActions'
@@ -9,6 +8,10 @@ import CardContent     from '@material-ui/core/CardContent'
 import CardMedia       from '@material-ui/core/CardMedia'
 import Button          from '@material-ui/core/Button'
 import Typography      from '@material-ui/core/Typography'
+import Snackbar        from '@material-ui/core/Snackbar'
+import IconButton      from '@material-ui/core/IconButton'
+
+import CloseIcon       from '@material-ui/icons/Close'
 
 import Paper           from '@material-ui/core/Paper'
 import Grid            from '@material-ui/core/Grid'
@@ -69,43 +72,47 @@ class ResultsPart extends React.Component
     console.log(`client > Results > constr : ${JSON.stringify(this.props)}`)
   }
 
+  onClose = (e, reason) =>
+  {
+    console.log('CLOSE')
+  }
+
   render = () =>
   {
     console.log(`client > Results > render`)
 
-  //const results = this.props.context.results // this does not work
-  //const results = Session.get('RESULTS')     // this does not work without withTracker
-    const results = this.props.results
-    const first   = this.props.first
+    const table = this.props.table
+    const first = this.props.first
+    const error = this.props.error
 
-    console.log(`client > Results > render : Answers = ${JSON.stringify(results, null, 4)}`)
+    console.log(`client > Results > render : Answers = ${JSON.stringify(table, null, 4)}`)
 
-    if (results && results.clips)
+    if (table && table.clips)
     {
       return (
-        <Paper style={css.root}>
+        <Paper style={css.root} elevation={3}>
           <Table style={css.tab}>
             <TableHead>
               <TableRow>
-                <TableCell>Rank </TableCell>
+                <TableCell>Rank</TableCell>
                 <TableCell>Video</TableCell>
                 <TableCell>Start</TableCell>
-                <TableCell>End  </TableCell>
-                <TableCell>Model</TableCell>
-                <TableCell>Terms</TableCell>
-                <TableCell align="right">Probability</TableCell>
+                <TableCell>End</TableCell>
+                <TableCell>Models</TableCell>
+                <TableCell>Matches</TableCell>
+                <TableCell align='right'>Probability</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {results.clips.map(hit => (
+              {table.clips.map(hit => (
                 <TableRow key={hit.rank}>
                   <TableCell              >{hit.rank }</TableCell>
                   <TableCell              >{hit.video}</TableCell>
                   <TableCell              >{hit.start}</TableCell>
                   <TableCell              >{hit.end  }</TableCell>
                   <TableCell              >{hit.model}</TableCell>
-                  <TableCell              >{hit.terms}</TableCell>
-                  <TableCell align="right">{`${(hit.probability * 100).toFixed(2)} %`}</TableCell>
+                  <TableCell              >{hit.match}</TableCell>
+                  <TableCell align='right'>{`${(hit.probability * 100).toFixed(2)} %`}</TableCell>
                 </TableRow>
               ))}
             </TableBody>
@@ -119,19 +126,35 @@ class ResultsPart extends React.Component
       {
         return (
           <Paper style={css.root}>
-            <Grid container item justify="center" style={css.roo}>
-              <iframe src="circle.html" height={261} frameBorder="0" />
+            <Grid container item justify='center' style={css.roo}>
+              <iframe src='circle.html' height={261} frameBorder='0' />
             </Grid>
             <Say speak={`please make an activity query`} />
           </Paper>
         )
       }
+      else if (error)
+      {
+        return (
+            <Paper style={css.root}>
+              <Grid container item justify='center' style={css.roo}>
+                <iframe src='circle.html' height={261} frameBorder='0' />
+              </Grid>
+              <Say speak={`uh oh, that did not work...`} />
+              <Snackbar anchorOrigin={{ vertical: 'bottom', horizontal: 'center',}}
+                        autoHideDuration={1}
+                        open='true'
+                        message='uh oh, that did not work...'
+                    />              
+            </Paper>
+          )
+      }
       else
       {
         return (
           <Paper style={css.root}>
-            <Grid container item justify="center" style={css.root}>
-              <img style={css.gif} src="tiki.gif" height={261} />
+            <Grid container item justify='center' style={css.root}>
+              <img style={css.gif} src='tiki.gif' height={261} />
             </Grid>
             <Say speak={`searching...`} />
           </Paper>
@@ -143,11 +166,12 @@ class ResultsPart extends React.Component
 
 export default ResultsCard = withTracker(() =>
 {
-  let results = Session.get('RESULTS')
-  let first   = Session.get('FIRST'  )
+  let table = Session.get('TABLE')
+  let first = Session.get('FIRST')
+  let error = Session.get('ERROR')
   
-  console.log(`client > Results > trackr : RESULTS = ${results}, FIRST = ${first}`)
+  console.log(`client > Results > trackr : TABLE = ${table}, FIRST = ${first}, ERROR = ${error}`)
 
-  return { results : results, first : first }
+  return { table : table, first : first, error : error }
 
 })(ResultsPart)

@@ -60,7 +60,8 @@ export default class QueriesCard extends React.Component
                  context={this.props.context}
                  terms={this.state.terms}
                  onTypeText={this.onTypeText}
-                 onClickAsk={this.onClickAsk} />
+                 onClickAsk={this.onClickAsk}
+                 onClickSub={this.onClickSub} />
       </Container>
     )
   }
@@ -71,11 +72,18 @@ export default class QueriesCard extends React.Component
 
     this.queryIndex = this.queryIndex.bind(this)
     this.onClickAsk = this.onClickAsk.bind(this)
+    this.onClickSub = this.onClickSub.bind(this)
 
     this.ready = true
     this.state = 
     {
-      terms : 'swimming at beach'
+      place : 'Activity Search Terms',
+      terms : '',
+      knobs :
+      {
+          subtitles : false,
+          all_terms : true
+      }
     }
   }
 
@@ -89,24 +97,30 @@ export default class QueriesCard extends React.Component
     {
       this.ready = false
 
-      console.log(`client > Queries > queryIndex`)
-
       var terms = this.state.terms
-      var knobs = {}
+      var knobs = this.state.knobs
 
-      console.log('client > Queries > queryIndex : callin api_queryIndex')
+      console.log(`client > Queries > queryIndex : callin api_queryIndex : KNOBS = ${JSON.stringify(knobs, null, 2)}`)
   
-      Session.set(  'FIRST', false)
-      Session.set('RESULTS',  null)
+      Session.set('FIRST', false)
+      Session.set('TABLE',  null)
+      Session.set('ERROR', false)
 
       Meteor.call('api_queryIndex', { terms : terms, knobs : knobs }, (err, res) =>
       {
         console.log('client > Queries > queryIndex : return api_queryIndex')
 
-        if (err) console.log(`ERR => ${err}`)
-        if (res) console.log(`RES => ${JSON.stringify(res, null, 4)}`)
+        if (err)
+        {
+            console.log(`ERR => ${err}`)
+            Session.set('ERROR', true)
+        }
 
-        Session.set('RESULTS', res ? res.result : null)
+        if (res)
+        {
+            console.log(`RES => ${JSON.stringify(res, null, 4)}`)
+            Session.set('TABLE', res.result)
+        }
 
         this.ready = true
       })
@@ -118,6 +132,13 @@ export default class QueriesCard extends React.Component
     console.log(`client > Queries > onClickAsk`)
 
     this.queryIndex()
+  }
+
+  onClickSub = (e) =>
+  {
+    console.log(`client > Queries > onClickSub : KNOBS = ${JSON.stringify(this.state.knobs, null, 2)}`)
+
+    this.setState({ knobs : { ...this.state.knobs, subtitles : !this.state.knobs.subtitles } })
   }
 
   onTypeText = (e) =>

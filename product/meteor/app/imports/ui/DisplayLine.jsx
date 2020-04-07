@@ -15,6 +15,12 @@ import Tooltip         from '@material-ui/core/Tooltip'
 import Snackbar        from '@material-ui/core/Snackbar'
 import Fab             from '@material-ui/core/Fab'
 
+import BottomNavigation from '@material-ui/core/BottomNavigation';
+import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
+import RestoreIcon from '@material-ui/icons/Restore';
+import FavoriteIcon from '@material-ui/icons/Favorite';      
+import LocationOnIcon from '@material-ui/icons/LocationOn';
+
 import MenuIcon             from '@material-ui/icons/Menu'
 import AddIcon              from '@material-ui/icons/Add';
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
@@ -27,31 +33,11 @@ const useStyles = makeStyles(theme => (
 {
   root :
   {
-    flexGrow     : 1,
-    borderRadius : 4,
-  },
-
-  bar :
-  {
-    backgroundColor : primary,
+    flexGrow        : 1,
     borderRadius    : 4,
+    marginTop       : 8,
+    backgroundColor : primary
   },
-
-  menu :
-  {
-    marginRight : theme.spacing(2),
-  },
-
-  title :
-  {
-    flexGrow : 1,
-  },
-
-  import :
-  {
-
-  },
-
   snackbar :
   {
     [theme.breakpoints.down('xs')] :
@@ -61,34 +47,19 @@ const useStyles = makeStyles(theme => (
   }
 }))
 
-export default function HeadingMenu()
+export default function DisplayLine()
 {
   const cls = useStyles()
+  const [value, setValue] = React.useState(0)
 
   return (
-    <React.Fragment>
-    <Grid id="HeadingRoot" className={cls.root}>
-      <AppBar position="static" className={cls.bar}>
-        <Toolbar>
-            <IconButton edge="start" className={cls.menu} color="inherit" aria-label="menu"><MenuIcon                 /></IconButton>
-            <Typography variant="h6" className={cls.title}                                 >Video Activity Search Engine</Typography>
-            <IconButton edge="end"   className={cls.import} color="inherit"                ><Badge badgeContent={4} color="secondary"><AddIcon     /></Badge></IconButton>
-        </Toolbar>
-      </AppBar>
-    </Grid>
-    </React.Fragment>
+    <BottomNavigation value={value}
+                      onChange={(event, newValue) => {setValue(newValue)}}
+                      className={cls.root}
+                      showLabels>
+        <BottomNavigationAction label="Recents"   icon={<RestoreIcon    />} />
+        <BottomNavigationAction label="Favorites" icon={<FavoriteIcon   />} />
+        <BottomNavigationAction label="Nearby"    icon={<LocationOnIcon />} />
+    </BottomNavigation>      
   )
-}
-
-function gitUpdate(e)
-{
-  console.log('Git Updating')
-
-/*
-  Meteor.call('gitUpdate', {}, (err, res) =>
-  {
-    console.log(res || 'No Response')
-    console.log(err || 'No Error')
-  })
-*/
 }

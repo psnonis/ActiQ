@@ -11,6 +11,7 @@
     "@babel/runtime": "^7.8.7",
     "@material-ui/core": "^4.9.5",
     "@material-ui/icons": "^4.9.1",
+    "@material-ui/lab": "^4.0.0-alpha.48",
     "grommet": "^2.7.4",
     "meteor-node-stubs": "^0.4.1",
     "react": "^16.13.0",

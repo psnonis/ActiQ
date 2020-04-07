@@ -1,4 +1,4 @@
-export const primary   = '#6b2614'
+export const primary   = '#2C0F3E' // '#6b2614'
 export const secondary = '#6b2614'
 
 export const faceColor = '#ffffff'
