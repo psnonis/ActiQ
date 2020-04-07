@@ -41,11 +41,26 @@ function CustomCheckbox() {
 }
 
 const theme = createMuiTheme({
-  status: {
+  status:
+  {
     danger: orange[500],
   },
-  palette: {
-    primary: purple
+  palette:
+  {
+    primary   :
+    {
+        main  : '#15284B'
+    },
+
+    secondary :
+    {
+        main  : '#F6B016'
+    },
+
+    tertiary  :
+    {
+        main  : '#BC9B6A'
+    }
   }
 });
 
@@ -54,6 +69,8 @@ Meteor.startup(() =>
   Session.set('TABLE',  null)
   Session.set('FIRST',  true)
   Session.set('ERROR', false)
+
+  console.log(purple)
 
   render( <ThemeProvider theme={theme}>
             <Router />

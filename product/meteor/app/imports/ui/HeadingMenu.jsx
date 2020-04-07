@@ -71,7 +71,7 @@ export default function HeadingMenu()
       <AppBar position='static' className={cls.bar}>
         <Toolbar>
             <IconButton edge='start' className={cls.menu}   color='inherit' aria-label='menu'><MenuIcon/></IconButton>
-            <Typography variant='h6' className={cls.title}  color='inherit'                  >Video Activity Search Engine</Typography>
+            <Typography variant='h6' className={cls.title}  color='inherit'                  >Video Activity Search</Typography>
             <IconButton edge='end'   className={cls.import} color='inherit'                  ><Badge badgeContent={4} color='secondary'><AddIcon/></Badge></IconButton>
         </Toolbar>
       </AppBar>

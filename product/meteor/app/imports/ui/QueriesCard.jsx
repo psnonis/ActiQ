@@ -59,6 +59,8 @@ export default class QueriesCard extends React.Component
         <QuizBox style={css.box}
                  context={this.props.context}
                  terms={this.state.terms}
+                 knobs={this.state.knobs}
+                 color={this.state.color}
                  onTypeText={this.onTypeText}
                  onClickAsk={this.onClickAsk}
                  onClickSub={this.onClickSub} />
@@ -83,7 +85,8 @@ export default class QueriesCard extends React.Component
       {
           subtitles : false,
           all_terms : true
-      }
+      },
+      color : 'default'
     }
   }
 
@@ -139,6 +142,7 @@ export default class QueriesCard extends React.Component
     console.log(`client > Queries > onClickSub : KNOBS = ${JSON.stringify(this.state.knobs, null, 2)}`)
 
     this.setState({ knobs : { ...this.state.knobs, subtitles : !this.state.knobs.subtitles } })
+    this.setState({ color : this.state.color == 'secondary' ? 'default' : 'secondary' })
   }
 
   onTypeText = (e) =>

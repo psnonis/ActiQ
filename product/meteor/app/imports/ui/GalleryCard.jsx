@@ -101,7 +101,7 @@ class GalleryPart extends React.Component
               {table.clips.map(hit => (
                 <GridListTile key={hit.rank} style={{width:640, height:360, padding:0}}>
                   <iframe style={css.tube} type='text/html' width='640' height='360' allow='autoplay' frameBorder='0' src={this.getYTLink(hit)}></iframe>
-                  <GridListTileBar style={css.title} titlePosition='bottom' title={`Rank ${hit.rank} : ${hit.video}`} subtitle={hit.match} actionIcon={<IconButton style={css.icon}><StarBorderIcon/></IconButton>} />
+                  <GridListTileBar style={css.title} titlePosition='bottom' title={`${hit.rank} - Starting at ${hit.start} Second(s)`} subtitle={hit.match} actionIcon={<IconButton style={css.icon}><StarBorderIcon/></IconButton>} />
                 </GridListTile>
               ))}
             </GridList>

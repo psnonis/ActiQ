@@ -4,12 +4,11 @@ import Paper          from '@material-ui/core/Paper'
 import InputBase      from '@material-ui/core/InputBase'
 import Divider        from '@material-ui/core/Divider'
 import IconButton     from '@material-ui/core/IconButton'
-import MicIcon        from '@material-ui/icons/Mic'
-import YouTubeIcon    from '@material-ui/icons/YouTube'
-import SearchIcon     from '@material-ui/icons/Search'
+//import ToggleButton   from '@material-ui/lab/ToggleButton'
 
-import YoutubeSearchedForIcon from '@material-ui/icons/YoutubeSearchedFor';
-import ClosedCaptionIcon      from '@material-ui/icons/ClosedCaption';
+import YouTubeIcon       from '@material-ui/icons/YouTube'
+import SearchIcon        from '@material-ui/icons/Search'
+import ClosedCaptionIcon from '@material-ui/icons/ClosedCaption';
 
 
 import { makeStyles } from '@material-ui/core/styles'
@@ -40,7 +39,7 @@ const useStyles = makeStyles(
 
   sub :
   {
-    color           : primary
+//    color           : primary
   },
   
   ask :
@@ -67,7 +66,7 @@ export default function QuizBox(props, hey) {
     <Paper        className={cls.root}>
       <IconButton className={cls.opt}  onClick={(e) => props.onClickOpt(e)}><YouTubeIcon      /></IconButton>
       <InputBase  className={cls.txt} onChange={(e) => props.onTypeText(e)} placeholder={props.place} value={props.terms} />
-      <IconButton className={cls.sub}  onClick={(e) => props.onClickSub(e)}><ClosedCaptionIcon/></IconButton>
+      <IconButton className={cls.sub}  onClick={(e) => props.onClickSub(e)} color={props.color}><ClosedCaptionIcon/></IconButton>
       <Divider    className={cls.sep} />
       <IconButton className={cls.ask}  onClick={(e) => props.onClickAsk(e)}><SearchIcon       /></IconButton>
     </Paper>
