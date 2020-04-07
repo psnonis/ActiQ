@@ -4,7 +4,7 @@ import Paper          from '@material-ui/core/Paper'
 import InputBase      from '@material-ui/core/InputBase'
 import Divider        from '@material-ui/core/Divider'
 import IconButton     from '@material-ui/core/IconButton'
-//import ToggleButton   from '@material-ui/lab/ToggleButton'
+import Tooltip        from '@material-ui/core/Tooltip'
 
 import YouTubeIcon       from '@material-ui/icons/YouTube'
 import SearchIcon        from '@material-ui/icons/Search'
@@ -23,7 +23,6 @@ const useStyles = makeStyles(
     width           : '100%',
     marginTop       : 8,
     alignItems      : 'center',
-//  backgroundColor : secondary,
   },
 
   txt :
@@ -39,7 +38,6 @@ const useStyles = makeStyles(
 
   sub :
   {
-//    color           : primary
   },
   
   ask :
@@ -64,11 +62,11 @@ export default function QuizBox(props, hey) {
 
   return (
     <Paper        className={cls.root}>
-      <IconButton className={cls.opt}  onClick={(e) => props.onClickOpt(e)}><YouTubeIcon      /></IconButton>
+      <Tooltip title='Options'><IconButton className={cls.opt}  onClick={(e) => props.onClickOpt(e)}><YouTubeIcon/></IconButton></Tooltip>
       <InputBase  className={cls.txt} onChange={(e) => props.onTypeText(e)} placeholder={props.place} value={props.terms} />
-      <IconButton className={cls.sub}  onClick={(e) => props.onClickSub(e)} color={props.color}><ClosedCaptionIcon/></IconButton>
+      <Tooltip title='Include Subtitles'><IconButton className={cls.sub}  onClick={(e) => props.onClickSub(e)} color={props.color}><ClosedCaptionIcon/></IconButton></Tooltip>
       <Divider    className={cls.sep} />
-      <IconButton className={cls.ask}  onClick={(e) => props.onClickAsk(e)}><SearchIcon       /></IconButton>
+      <Tooltip title='Search'><IconButton className={cls.ask}  onClick={(e) => props.onClickAsk(e)}><SearchIcon/></IconButton></Tooltip>
     </Paper>
   )
 }

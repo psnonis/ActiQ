@@ -17,6 +17,14 @@ body
 {
     background: linear-gradient(to bottom, #0b8793, #360033);
     background: linear-gradient(to bottom, #b6fbff, #83a4d4);
+    background: linear-gradient(to bottom, #9DAD33, #9DAD33);
+    background: linear-gradient(to bottom, #B9D3B6, #53626F);
+    background: linear-gradient(to bottom, #53626F, #53626F);
+    background: linear-gradient(to bottom, #5C3160, #5C3160);
+    background: linear-gradient(to bottom, #6C3302, #6C3302);
+    background: linear-gradient(to bottom, #BC9B6A, #BC9B6A);
+    background: linear-gradient(to bottom, #C2B9A7, #C2B9A7);
+    background: linear-gradient(to bottom, #b6fbff, #83a4d4);
 }
 
 /* ::-webkit-scrollbar
