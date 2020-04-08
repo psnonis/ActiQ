@@ -1,0 +1,480 @@
+SF-AVA,1,bend or bow (at the waist)
+SF-AVA,2,crawl
+SF-AVA,3,crouch or kneel
+SF-AVA,4,dance
+SF-AVA,5,fall down
+SF-AVA,6,get up
+SF-AVA,7,jump or leap
+SF-AVA,8,lie or sleep
+SF-AVA,9,martial art
+SF-AVA,10,run or jog
+SF-AVA,11,sit
+SF-AVA,12,stand
+SF-AVA,13,swim
+SF-AVA,14,walk
+SF-AVA,15,answer phone
+SF-AVA,16,brush teeth
+SF-AVA,17,carry or hold (an object)
+SF-AVA,18,catch (an object)
+SF-AVA,19,chop
+SF-AVA,20,climb (a mountain)
+SF-AVA,21,clink glass
+SF-AVA,22,close (a door or a box)
+SF-AVA,23,cook
+SF-AVA,24,cut
+SF-AVA,25,dig
+SF-AVA,26,dress or put on clothing
+SF-AVA,27,drink
+SF-AVA,28,drive (a car or a truck)
+SF-AVA,29,eat
+SF-AVA,30,enter
+SF-AVA,31,exit
+SF-AVA,32,extract
+SF-AVA,33,fishing
+SF-AVA,34,hit (an object)
+SF-AVA,35,kick (an object)
+SF-AVA,36,lift or pick up
+SF-AVA,37,listen (to music)
+SF-AVA,38,open (a window or a car door)
+SF-AVA,39,paint
+SF-AVA,40,play board game
+SF-AVA,41,play musical instrument
+SF-AVA,42,play with pets
+SF-AVA,43,point to (an object)
+SF-AVA,44,press
+SF-AVA,45,pull (an object)
+SF-AVA,46,push (an object)
+SF-AVA,47,put down
+SF-AVA,48,read
+SF-AVA,49,ride (a bike or a car or a horse)
+SF-AVA,50,row boat
+SF-AVA,51,sail boat
+SF-AVA,52,shoot
+SF-AVA,53,shovel
+SF-AVA,54,smoke
+SF-AVA,55,stir
+SF-AVA,56,take a photo
+SF-AVA,57,text on or look at a cellphone
+SF-AVA,58,throw
+SF-AVA,59,touch (an object)
+SF-AVA,60,turn (a screwdriver)
+SF-AVA,61,watch (tv)
+SF-AVA,62,work on a computer
+SF-AVA,63,write
+SF-AVA,64,fight or hit (a person)
+SF-AVA,65,give or serve (an object) to (a person)
+SF-AVA,66,grab (a person)
+SF-AVA,67,hand clap
+SF-AVA,68,hand shake
+SF-AVA,69,hand wave
+SF-AVA,70,hug (a person)
+SF-AVA,71,kick (a person)
+SF-AVA,72,kiss (a person)
+SF-AVA,73,lift (a person)
+SF-AVA,74,listen to (a person)
+SF-AVA,75,play with kids
+SF-AVA,76,push (another person)
+SF-AVA,77,sing to (self or a person or a group)
+SF-AVA,78,take (an object) from (a person)
+SF-AVA,79,talk to (self or a person or a group)
+SF-AVA,80,watch (a person)
+SF-Kinetics,1,abseiling
+SF-Kinetics,2,air drumming
+SF-Kinetics,3,answering questions
+SF-Kinetics,4,applauding
+SF-Kinetics,5,applying cream
+SF-Kinetics,6,archery
+SF-Kinetics,7,arm wrestling
+SF-Kinetics,8,arranging flowers
+SF-Kinetics,9,assembling computer
+SF-Kinetics,10,auctioning
+SF-Kinetics,11,baby waking up
+SF-Kinetics,12,baking cookies
+SF-Kinetics,13,balloon blowing
+SF-Kinetics,14,bandaging
+SF-Kinetics,15,barbequing
+SF-Kinetics,16,bartending
+SF-Kinetics,17,beatboxing
+SF-Kinetics,18,bee keeping
+SF-Kinetics,19,belly dancing
+SF-Kinetics,20,bench pressing
+SF-Kinetics,21,bending back
+SF-Kinetics,22,bending metal
+SF-Kinetics,23,biking through snow
+SF-Kinetics,24,blasting sand
+SF-Kinetics,25,blowing glass
+SF-Kinetics,26,blowing leaves
+SF-Kinetics,27,blowing nose
+SF-Kinetics,28,blowing out candles
+SF-Kinetics,29,bobsledding
+SF-Kinetics,30,bookbinding
+SF-Kinetics,31,bouncing on trampoline
+SF-Kinetics,32,bowling
+SF-Kinetics,33,braiding hair
+SF-Kinetics,34,breading or breadcrumbing
+SF-Kinetics,35,breakdancing
+SF-Kinetics,36,brush painting
+SF-Kinetics,37,brushing hair
+SF-Kinetics,38,brushing teeth
+SF-Kinetics,39,building cabinet
+SF-Kinetics,40,building shed
+SF-Kinetics,41,bungee jumping
+SF-Kinetics,42,busking
+SF-Kinetics,43,canoeing or kayaking
+SF-Kinetics,44,capoeira
+SF-Kinetics,45,carrying baby
+SF-Kinetics,46,cartwheeling
+SF-Kinetics,47,carving pumpkin
+SF-Kinetics,48,catching fish
+SF-Kinetics,49,catching or throwing baseball
+SF-Kinetics,50,catching or throwing frisbee
+SF-Kinetics,51,catching or throwing softball
+SF-Kinetics,52,celebrating
+SF-Kinetics,53,changing oil
+SF-Kinetics,54,changing wheel
+SF-Kinetics,55,checking tires
+SF-Kinetics,56,cheerleading
+SF-Kinetics,57,chopping wood
+SF-Kinetics,58,clapping
+SF-Kinetics,59,clay pottery making
+SF-Kinetics,60,clean and jerk
+SF-Kinetics,61,cleaning floor
+SF-Kinetics,62,cleaning gutters
+SF-Kinetics,63,cleaning pool
+SF-Kinetics,64,cleaning shoes
+SF-Kinetics,65,cleaning toilet
+SF-Kinetics,66,cleaning windows
+SF-Kinetics,67,climbing a rope
+SF-Kinetics,68,climbing ladder
+SF-Kinetics,69,climbing tree
+SF-Kinetics,70,contact juggling
+SF-Kinetics,71,cooking chicken
+SF-Kinetics,72,cooking egg
+SF-Kinetics,73,cooking on campfire
+SF-Kinetics,74,cooking sausages
+SF-Kinetics,75,counting money
+SF-Kinetics,76,country line dancing
+SF-Kinetics,77,cracking neck
+SF-Kinetics,78,crawling baby
+SF-Kinetics,79,crossing river
+SF-Kinetics,80,crying
+SF-Kinetics,81,curling hair
+SF-Kinetics,82,cutting nails
+SF-Kinetics,83,cutting pineapple
+SF-Kinetics,84,cutting watermelon
+SF-Kinetics,85,dancing ballet
+SF-Kinetics,86,dancing charleston
+SF-Kinetics,87,dancing gangnam style
+SF-Kinetics,88,dancing macarena
+SF-Kinetics,89,deadlifting
+SF-Kinetics,90,decorating the christmas tree
+SF-Kinetics,91,digging
+SF-Kinetics,92,dining
+SF-Kinetics,93,disc golfing
+SF-Kinetics,94,diving cliff
+SF-Kinetics,95,dodgeball
+SF-Kinetics,96,doing aerobics
+SF-Kinetics,97,doing laundry
+SF-Kinetics,98,doing nails
+SF-Kinetics,99,drawing
+SF-Kinetics,100,dribbling basketball
+SF-Kinetics,101,drinking
+SF-Kinetics,102,drinking beer
+SF-Kinetics,103,drinking shots
+SF-Kinetics,104,driving car
+SF-Kinetics,105,driving tractor
+SF-Kinetics,106,drop kicking
+SF-Kinetics,107,drumming fingers
+SF-Kinetics,108,dunking basketball
+SF-Kinetics,109,dying hair
+SF-Kinetics,110,eating burger
+SF-Kinetics,111,eating cake
+SF-Kinetics,112,eating carrots
+SF-Kinetics,113,eating chips
+SF-Kinetics,114,eating doughnuts
+SF-Kinetics,115,eating hotdog
+SF-Kinetics,116,eating ice cream
+SF-Kinetics,117,eating spaghetti
+SF-Kinetics,118,eating watermelon
+SF-Kinetics,119,egg hunting
+SF-Kinetics,120,exercising arm
+SF-Kinetics,121,exercising with an exercise ball
+SF-Kinetics,122,extinguishing fire
+SF-Kinetics,123,faceplanting
+SF-Kinetics,124,feeding birds
+SF-Kinetics,125,feeding fish
+SF-Kinetics,126,feeding goats
+SF-Kinetics,127,filling eyebrows
+SF-Kinetics,128,finger snapping
+SF-Kinetics,129,fixing hair
+SF-Kinetics,130,flipping pancake
+SF-Kinetics,131,flying kite
+SF-Kinetics,132,folding clothes
+SF-Kinetics,133,folding napkins
+SF-Kinetics,134,folding paper
+SF-Kinetics,135,front raises
+SF-Kinetics,136,frying vegetables
+SF-Kinetics,137,garbage collecting
+SF-Kinetics,138,gargling
+SF-Kinetics,139,getting a haircut
+SF-Kinetics,140,getting a tattoo
+SF-Kinetics,141,giving or receiving award
+SF-Kinetics,142,golf chipping
+SF-Kinetics,143,golf driving
+SF-Kinetics,144,golf putting
+SF-Kinetics,145,grinding meat
+SF-Kinetics,146,grooming dog
+SF-Kinetics,147,grooming horse
+SF-Kinetics,148,gymnastics tumbling
+SF-Kinetics,149,hammer throw
+SF-Kinetics,150,headbanging
+SF-Kinetics,151,headbutting
+SF-Kinetics,152,high jump
+SF-Kinetics,153,high kick
+SF-Kinetics,154,hitting baseball
+SF-Kinetics,155,hockey stop
+SF-Kinetics,156,holding snake
+SF-Kinetics,157,hopscotch
+SF-Kinetics,158,hoverboarding
+SF-Kinetics,159,hugging
+SF-Kinetics,160,hula hooping
+SF-Kinetics,161,hurdling
+SF-Kinetics,162,hurling (sport)
+SF-Kinetics,163,ice climbing
+SF-Kinetics,164,ice fishing
+SF-Kinetics,165,ice skating
+SF-Kinetics,166,ironing
+SF-Kinetics,167,javelin throw
+SF-Kinetics,168,jetskiing
+SF-Kinetics,169,jogging
+SF-Kinetics,170,juggling balls
+SF-Kinetics,171,juggling fire
+SF-Kinetics,172,juggling soccer ball
+SF-Kinetics,173,jumping into pool
+SF-Kinetics,174,jumpstyle dancing
+SF-Kinetics,175,kicking field goal
+SF-Kinetics,176,kicking soccer ball
+SF-Kinetics,177,kissing
+SF-Kinetics,178,kitesurfing
+SF-Kinetics,179,knitting
+SF-Kinetics,180,krumping
+SF-Kinetics,181,laughing
+SF-Kinetics,182,laying bricks
+SF-Kinetics,183,long jump
+SF-Kinetics,184,lunge
+SF-Kinetics,185,making a cake
+SF-Kinetics,186,making a sandwich
+SF-Kinetics,187,making bed
+SF-Kinetics,188,making jewelry
+SF-Kinetics,189,making pizza
+SF-Kinetics,190,making snowman
+SF-Kinetics,191,making sushi
+SF-Kinetics,192,making tea
+SF-Kinetics,193,marching
+SF-Kinetics,194,massaging back
+SF-Kinetics,195,massaging feet
+SF-Kinetics,196,massaging legs
+SF-Kinetics,197,massaging person's head
+SF-Kinetics,198,milking cow
+SF-Kinetics,199,mopping floor
+SF-Kinetics,200,motorcycling
+SF-Kinetics,201,moving furniture
+SF-Kinetics,202,mowing lawn
+SF-Kinetics,203,news anchoring
+SF-Kinetics,204,opening bottle
+SF-Kinetics,205,opening present
+SF-Kinetics,206,paragliding
+SF-Kinetics,207,parasailing
+SF-Kinetics,208,parkour
+SF-Kinetics,209,passing american football (in game)
+SF-Kinetics,210,passing american football (not in game)
+SF-Kinetics,211,peeling apples
+SF-Kinetics,212,peeling potatoes
+SF-Kinetics,213,petting animal (not cat)
+SF-Kinetics,214,petting cat
+SF-Kinetics,215,picking fruit
+SF-Kinetics,216,planting trees
+SF-Kinetics,217,plastering
+SF-Kinetics,218,playing accordion
+SF-Kinetics,219,playing badminton
+SF-Kinetics,220,playing bagpipes
+SF-Kinetics,221,playing basketball
+SF-Kinetics,222,playing bass guitar
+SF-Kinetics,223,playing cards
+SF-Kinetics,224,playing cello
+SF-Kinetics,225,playing chess
+SF-Kinetics,226,playing clarinet
+SF-Kinetics,227,playing controller
+SF-Kinetics,228,playing cricket
+SF-Kinetics,229,playing cymbals
+SF-Kinetics,230,playing didgeridoo
+SF-Kinetics,231,playing drums
+SF-Kinetics,232,playing flute
+SF-Kinetics,233,playing guitar
+SF-Kinetics,234,playing harmonica
+SF-Kinetics,235,playing harp
+SF-Kinetics,236,playing ice hockey
+SF-Kinetics,237,playing keyboard
+SF-Kinetics,238,playing kickball
+SF-Kinetics,239,playing monopoly
+SF-Kinetics,240,playing organ
+SF-Kinetics,241,playing paintball
+SF-Kinetics,242,playing piano
+SF-Kinetics,243,playing poker
+SF-Kinetics,244,playing recorder
+SF-Kinetics,245,playing saxophone
+SF-Kinetics,246,playing squash or racquetball
+SF-Kinetics,247,playing tennis
+SF-Kinetics,248,playing trombone
+SF-Kinetics,249,playing trumpet
+SF-Kinetics,250,playing ukulele
+SF-Kinetics,251,playing violin
+SF-Kinetics,252,playing volleyball
+SF-Kinetics,253,playing xylophone
+SF-Kinetics,254,pole vault
+SF-Kinetics,255,presenting weather forecast
+SF-Kinetics,256,pull ups
+SF-Kinetics,257,pumping fist
+SF-Kinetics,258,pumping gas
+SF-Kinetics,259,punching bag
+SF-Kinetics,260,punching person (boxing)
+SF-Kinetics,261,push up
+SF-Kinetics,262,pushing car
+SF-Kinetics,263,pushing cart
+SF-Kinetics,264,pushing wheelchair
+SF-Kinetics,265,reading book
+SF-Kinetics,266,reading newspaper
+SF-Kinetics,267,recording music
+SF-Kinetics,268,riding a bike
+SF-Kinetics,269,riding camel
+SF-Kinetics,270,riding elephant
+SF-Kinetics,271,riding mechanical bull
+SF-Kinetics,272,riding mountain bike
+SF-Kinetics,273,riding mule
+SF-Kinetics,274,riding or walking with horse
+SF-Kinetics,275,riding scooter
+SF-Kinetics,276,riding unicycle
+SF-Kinetics,277,ripping paper
+SF-Kinetics,278,robot dancing
+SF-Kinetics,279,rock climbing
+SF-Kinetics,280,rock scissors paper
+SF-Kinetics,281,roller skating
+SF-Kinetics,282,running on treadmill
+SF-Kinetics,283,sailing
+SF-Kinetics,284,salsa dancing
+SF-Kinetics,285,sanding floor
+SF-Kinetics,286,scrambling eggs
+SF-Kinetics,287,scuba diving
+SF-Kinetics,288,setting table
+SF-Kinetics,289,shaking hands
+SF-Kinetics,290,shaking head
+SF-Kinetics,291,sharpening knives
+SF-Kinetics,292,sharpening pencil
+SF-Kinetics,293,shaving head
+SF-Kinetics,294,shaving legs
+SF-Kinetics,295,shearing sheep
+SF-Kinetics,296,shining shoes
+SF-Kinetics,297,shooting basketball
+SF-Kinetics,298,shooting goal (soccer)
+SF-Kinetics,299,shot put
+SF-Kinetics,300,shoveling snow
+SF-Kinetics,301,shredding paper
+SF-Kinetics,302,shuffling cards
+SF-Kinetics,303,side kick
+SF-Kinetics,304,sign language interpreting
+SF-Kinetics,305,singing
+SF-Kinetics,306,situp
+SF-Kinetics,307,skateboarding
+SF-Kinetics,308,ski jumping
+SF-Kinetics,309,skiing (not slalom or crosscountry)
+SF-Kinetics,310,skiing crosscountry
+SF-Kinetics,311,skiing slalom
+SF-Kinetics,312,skipping rope
+SF-Kinetics,313,skydiving
+SF-Kinetics,314,slacklining
+SF-Kinetics,315,slapping
+SF-Kinetics,316,sled dog racing
+SF-Kinetics,317,smoking
+SF-Kinetics,318,smoking hookah
+SF-Kinetics,319,snatch weight lifting
+SF-Kinetics,320,sneezing
+SF-Kinetics,321,sniffing
+SF-Kinetics,322,snorkeling
+SF-Kinetics,323,snowboarding
+SF-Kinetics,324,snowkiting
+SF-Kinetics,325,snowmobiling
+SF-Kinetics,326,somersaulting
+SF-Kinetics,327,spinning poi
+SF-Kinetics,328,spray painting
+SF-Kinetics,329,spraying
+SF-Kinetics,330,springboard diving
+SF-Kinetics,331,squat
+SF-Kinetics,332,sticking tongue out
+SF-Kinetics,333,stomping grapes
+SF-Kinetics,334,stretching arm
+SF-Kinetics,335,stretching leg
+SF-Kinetics,336,strumming guitar
+SF-Kinetics,337,surfing crowd
+SF-Kinetics,338,surfing water
+SF-Kinetics,339,sweeping floor
+SF-Kinetics,340,swimming backstroke
+SF-Kinetics,341,swimming breast stroke
+SF-Kinetics,342,swimming butterfly stroke
+SF-Kinetics,343,swing dancing
+SF-Kinetics,344,swinging legs
+SF-Kinetics,345,swinging on something
+SF-Kinetics,346,sword fighting
+SF-Kinetics,347,tai chi
+SF-Kinetics,348,taking a shower
+SF-Kinetics,349,tango dancing
+SF-Kinetics,350,tap dancing
+SF-Kinetics,351,tapping guitar
+SF-Kinetics,352,tapping pen
+SF-Kinetics,353,tasting beer
+SF-Kinetics,354,tasting food
+SF-Kinetics,355,testifying
+SF-Kinetics,356,texting
+SF-Kinetics,357,throwing axe
+SF-Kinetics,358,throwing ball
+SF-Kinetics,359,throwing discus
+SF-Kinetics,360,tickling
+SF-Kinetics,361,tobogganing
+SF-Kinetics,362,tossing coin
+SF-Kinetics,363,tossing salad
+SF-Kinetics,364,training dog
+SF-Kinetics,365,trapezing
+SF-Kinetics,366,trimming or shaving beard
+SF-Kinetics,367,trimming trees
+SF-Kinetics,368,triple jump
+SF-Kinetics,369,tying bow tie
+SF-Kinetics,370,tying knot (not on a tie)
+SF-Kinetics,371,tying tie
+SF-Kinetics,372,unboxing
+SF-Kinetics,373,unloading truck
+SF-Kinetics,374,using computer
+SF-Kinetics,375,using remote controller (not gaming)
+SF-Kinetics,376,using segway
+SF-Kinetics,377,vault
+SF-Kinetics,378,waiting in line
+SF-Kinetics,379,walking the dog
+SF-Kinetics,380,washing dishes
+SF-Kinetics,381,washing feet
+SF-Kinetics,382,washing hair
+SF-Kinetics,383,washing hands
+SF-Kinetics,384,water skiing
+SF-Kinetics,385,water sliding
+SF-Kinetics,386,watering plants
+SF-Kinetics,387,waxing back
+SF-Kinetics,388,waxing chest
+SF-Kinetics,389,waxing eyebrows
+SF-Kinetics,390,waxing legs
+SF-Kinetics,391,weaving basket
+SF-Kinetics,392,welding
+SF-Kinetics,393,whistling
+SF-Kinetics,394,windsurfing
+SF-Kinetics,395,wrapping present
+SF-Kinetics,396,wrestling
+SF-Kinetics,397,writing
+SF-Kinetics,398,yawning
+SF-Kinetics,399,yoga
+SF-Kinetics,400,zumba

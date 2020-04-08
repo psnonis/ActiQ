@@ -39,14 +39,15 @@ Meteor.methods(
         console.log('server > main > api_queryIndex called')
         console.log(`params > ${JSON.stringify(params, null, 4)}`)
 
-        if (params.terms)
+        if (params.terms || params.chips)
         {
             Captures.remove({})
 
             var uri       = GetAPIEndpoint('engine', 'queryIndex')
 
             let response  = await superagent.post(uri)
-            .query({ terms : params.terms,
+            .query({ terms :                params.terms ,
+                     chips : JSON.stringify(params.chips),
                      knobs : JSON.stringify(params.knobs) })
 
             console.log(`server > main > api_queryIndex return : ${JSON.stringify(response.body, null, 2)}`)

@@ -20,7 +20,7 @@ const context =
 {
 }
 
-const InquirePage = () =>
+const PrimaryPage = () =>
 (
   <Container       id="InquireRoot"   style={styling.roo}>
       <HeadingMenu id="HeadingMenu" context={context}/>
@@ -31,4 +31,4 @@ const InquirePage = () =>
   </Container>
 )
 
-export default InquirePage
+export default PrimaryPage

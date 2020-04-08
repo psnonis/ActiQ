@@ -206,8 +206,8 @@ opening present
 paragliding
 parasailing
 parkour
-passing American football (in game)
-passing American football (not in game)
+passing american football (in game)
+passing american football (not in game)
 peeling apples
 peeling potatoes
 petting animal (not cat)

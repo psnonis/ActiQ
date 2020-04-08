@@ -1,23 +1,17 @@
 import { withTracker } from 'meteor/react-meteor-data'
-import { Captures    } from '/imports/api/captures'
 
 import React           from 'react'
-
 import YouTube         from 'react-youtube'
 
-import Container       from '@material-ui/core/Container'
 import Paper           from '@material-ui/core/Paper'
 import Grid            from '@material-ui/core/Grid'
 import GridList        from '@material-ui/core/GridList'
 import GridListTile    from '@material-ui/core/GridListTile'
 import GridListTileBar from '@material-ui/core/GridListTileBar'
-import ListSubheader   from '@material-ui/core/ListSubheader'
 import IconButton      from '@material-ui/core/IconButton'
 import StarBorderIcon  from '@material-ui/icons/StarBorder'
 
 import { makeStyles }  from '@material-ui/core/styles'
-import { primary,
-         secondary  }  from './Themes'
 
 const css =
 {
@@ -26,7 +20,7 @@ const css =
     width      : '100%',
     marginTop  : 8,
     overflowX  : 'auto',
-    background : secondary
+    background : 'black'
   },
 
   root :
@@ -66,15 +60,13 @@ class GalleryPart extends React.Component
   constructor(props)
   {
     super(props)
-
-    console.log(`client > Gallery > constr : ${JSON.stringify(this.props)}`)
   }
 
   getYTLink = (hit) =>
   {
     console.log(hit)
 
-    // https://www.npmjs.com/package/react-youtube
+    //https://www.npmjs.com/package/react-youtube
 
     var link = `https://www.youtube.com/embed/${hit.video}`
     var trim = `start=${hit.start}&end=${hit.end}`
@@ -142,7 +134,7 @@ export default GalleryCard = withTracker(() =>
   let first = Session.get('FIRST')
   let error = Session.get('ERROR')
   
-  console.log(`client > Gallery > trackr : TABLE = ${table}, FIRST = ${first}, ERROR = ${error}`)
+//console.log(`client > Gallery > trackr : TABLE = ${table}, FIRST = ${first}, ERROR = ${error}`)
 
   return { table : table, first : first, error : error }
 })(GalleryPart)

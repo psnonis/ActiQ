@@ -45,7 +45,6 @@ const css =
     width           : '100%',
     marginTop       : 8,
     borderRadius    : 4,
-//  backgroundColor : secondary
   },
 
   tab :
@@ -69,7 +68,7 @@ class ResultsPart extends React.Component
   {
     super(props)
 
-    console.log(`client > Results > constr : ${JSON.stringify(this.props)}`)
+  //console.log(`client > Results > constr : ${JSON.stringify(this.props)}`)
   }
 
   onClose = (e, reason) =>
@@ -79,13 +78,11 @@ class ResultsPart extends React.Component
 
   render = () =>
   {
-    console.log(`client > Results > render`)
-
     const table = this.props.table
     const first = this.props.first
     const error = this.props.error
 
-    console.log(`client > Results > render : Answers = ${JSON.stringify(table, null, 4)}`)
+    console.log(`client > Results > render : TABLE = ${JSON.stringify(table, null, 4)}`)
 
     if (table && table.clips)
     {
@@ -140,10 +137,9 @@ class ResultsPart extends React.Component
               <Grid container item justify='center' style={css.roo}>
                 <iframe src='circle.html' height={261} frameBorder='0' />
               </Grid>
-              <Say speak={`uh oh, that did not work...`} />
               <Snackbar anchorOrigin={{ vertical: 'bottom', horizontal: 'center',}}
                         autoHideDuration={1}
-                        open='true'
+                        open={true}
                         message='uh oh, that did not work...'
                     />              
             </Paper>
@@ -170,7 +166,7 @@ export default ResultsCard = withTracker(() =>
   let first = Session.get('FIRST')
   let error = Session.get('ERROR')
   
-  console.log(`client > Results > trackr : TABLE = ${table}, FIRST = ${first}, ERROR = ${error}`)
+//console.log(`client > Results > trackr : TABLE = ${table}, FIRST = ${first}, ERROR = ${error}`)
 
   return { table : table, first : first, error : error }
 

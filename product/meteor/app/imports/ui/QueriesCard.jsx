@@ -52,18 +52,20 @@ export default class QueriesCard extends React.Component
 {
   render = () =>
   {
-    console.log(`client > Queries > render`)
+  //console.log(`client > Queries > render`)
 
     return (
       <Container id="QueriesRoot" style={css.root}>
         <QuizBox style={css.box}
                  context={this.props.context}
                  terms={this.state.terms}
+                 chips={this.state.chips}                 
                  knobs={this.state.knobs}
                  color={this.state.color}
-                 onTypeText={this.onTypeText}
-                 onClickAsk={this.onClickAsk}
-                 onClickSub={this.onClickSub} />
+                 onChangeTerms={this.onChangeTerms}
+                 onChangeChips={this.onChangeChips}
+                 onClickSTitle={this.onClickSTitle}
+                 onClickSearch={this.onClickSearch} />
       </Container>
     )
   }
@@ -72,15 +74,18 @@ export default class QueriesCard extends React.Component
   {
     super(props)
 
-    this.queryIndex = this.queryIndex.bind(this)
-    this.onClickAsk = this.onClickAsk.bind(this)
-    this.onClickSub = this.onClickSub.bind(this)
+    this.queryIndex    = this.queryIndex.bind(this)
+
+    this.onChangeTerms = this.onChangeTerms.bind(this)    
+    this.onChangeChips = this.onChangeChips.bind(this)
+    this.onClickSTitle = this.onClickSTitle.bind(this)
+    this.onClickSearch = this.onClickSearch.bind(this)
 
     this.ready = true
     this.state = 
     {
-      place : 'Activity Search Terms',
       terms : '',
+      chips : [],
       knobs :
       {
           subtitles : false,
@@ -100,28 +105,29 @@ export default class QueriesCard extends React.Component
     {
       this.ready = false
 
-      var terms = this.state.terms
-      var knobs = this.state.knobs
+      var  chips = this.state.chips
+      var  terms = this.state.terms
+      var  knobs = this.state.knobs
 
-      console.log(`client > Queries > queryIndex : callin api_queryIndex : KNOBS = ${JSON.stringify(knobs, null, 2)}`)
+      console.log(`client > Queries > queryIndex : callin api_queryIndex : CHIPS = ${JSON.stringify(chips, null, 2)}`)
   
       Session.set('FIRST', false)
       Session.set('TABLE',  null)
       Session.set('ERROR', false)
 
-      Meteor.call('api_queryIndex', { terms : terms, knobs : knobs }, (err, res) =>
+      Meteor.call('api_queryIndex', { terms : terms, chips : chips, knobs : knobs }, (err, res) =>
       {
         console.log('client > Queries > queryIndex : return api_queryIndex')
 
         if (err)
         {
-            console.log(`ERR => ${err}`)
+            console.log(`client > Queries > queryIndex : ERR = ${err}`)
             Session.set('ERROR', true)
         }
 
         if (res)
         {
-            console.log(`RES => ${JSON.stringify(res, null, 4)}`)
+            console.log(`client > Queries > queryIndex : RES = ${JSON.stringify(res, null, 4)}`)
             Session.set('TABLE', res.result)
         }
 
@@ -130,25 +136,35 @@ export default class QueriesCard extends React.Component
     }
   }
 
-  onClickAsk = (e) =>
+  onClickSearch = (e) =>
   {
-    console.log(`client > Queries > onClickAsk`)
+    console.log(`client > Queries > onClickSearch`)
 
     this.queryIndex()
   }
 
-  onClickSub = (e) =>
+  onClickSTitle = (e) =>
   {
-    console.log(`client > Queries > onClickSub : KNOBS = ${JSON.stringify(this.state.knobs, null, 2)}`)
+    console.log(`client > Queries > onClickSTitle : KNOBS = ${JSON.stringify(this.state.knobs, null, 2)}`)
 
     this.setState({ knobs : { ...this.state.knobs, subtitles : !this.state.knobs.subtitles } })
     this.setState({ color : this.state.color == 'secondary' ? 'default' : 'secondary' })
+
+    this.setState({ chips :[] })
+    this.setState({ terms :'' })
   }
 
-  onTypeText = (e) =>
+  onChangeTerms = (e) =>
   {
-    console.log(`client > Queries > onTypeText`)
+    console.log(`client > Queries > onChangeTerms : ${JSON.stringify(e.target.value)}`)
 
     this.setState({ terms : e.target.value })
+  }
+
+  onChangeChips = (e, v) =>
+  {
+    console.log(`client > Queries > onChangeChips : ${JSON.stringify(v)}`)
+
+    this.setState({ chips : v })
   }
 }

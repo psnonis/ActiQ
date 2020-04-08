@@ -70,8 +70,6 @@ Meteor.startup(() =>
   Session.set('FIRST',  true)
   Session.set('ERROR', false)
 
-  console.log(purple)
-
   render( <ThemeProvider theme={theme}>
             <Router />
           </ThemeProvider>, document.getElementById('react-target'))

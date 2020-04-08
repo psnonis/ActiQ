@@ -2,22 +2,17 @@ import { Meteor }      from 'meteor/meteor'
 
 import React           from 'react'
 
-import Container       from '@material-ui/core/Container'
 import Grid            from '@material-ui/core/Grid'
-import Box             from '@material-ui/core/Box'
 import AppBar          from '@material-ui/core/AppBar'
 import Toolbar         from '@material-ui/core/Toolbar'
 import Typography      from '@material-ui/core/Typography'
-import Badge           from '@material-ui/core/Badge'
-import Button          from '@material-ui/core/Button'
 import IconButton      from '@material-ui/core/IconButton'
-import Tooltip         from '@material-ui/core/Tooltip'
-import Snackbar        from '@material-ui/core/Snackbar'
-import Fab             from '@material-ui/core/Fab'
+import Drawer          from '@material-ui/core/Drawer'
+import Badge           from '@material-ui/core/Badge'
 
-import MenuIcon             from '@material-ui/icons/Menu'
-import AddIcon              from '@material-ui/icons/Add';
-import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
+import MenuIcon        from '@material-ui/icons/Menu'
+
+import ImportsView     from './ImportsView'
 
 import { makeStyles  } from '@material-ui/core/styles'
 import { primary,
@@ -37,7 +32,7 @@ const useStyles = makeStyles(theme => (
     borderRadius    : 4,
   },
 
-  menu :
+  tools :
   {
     marginRight : theme.spacing(2),
   },
@@ -47,48 +42,35 @@ const useStyles = makeStyles(theme => (
     flexGrow : 1,
   },
 
-  import :
+  video :
   {
-
+    foreground : 'white'
   },
 
-  snackbar :
+  queue :
   {
-    [theme.breakpoints.down('xs')] :
-    {
-      bottom: 90,
-    }
-  }
+  },
 }))
+
+//MF-1m3A8snY
 
 export default function HeadingMenu()
 {
-  const cls = useStyles()
+  const [state, setState] = React.useState({ show  : false })
+  const style             = useStyles()
 
   return (
     <React.Fragment>
-    <Grid id='HeadingRoot' className={cls.root}>
-      <AppBar position='static' className={cls.bar}>
+    <Grid id='HeadingRoot' className={style.root}>
+      <AppBar position='static' className={style.bar}>
         <Toolbar>
-            <IconButton edge='start' className={cls.menu}   color='inherit' aria-label='menu'><MenuIcon/></IconButton>
-            <Typography variant='h6' className={cls.title}  color='inherit'                  >Video Activity Search</Typography>
-            <IconButton edge='end'   className={cls.import} color='inherit'                  ><Badge badgeContent={4} color='secondary'><AddIcon/></Badge></IconButton>
+            <IconButton edge='start' className={style.tools} color='inherit' aria-label='menu' onClick={(e) => setState({ show : true })}><MenuIcon/></IconButton>
+            <Typography edge='start' className={style.title} color='inherit' variant='h6'>Video Activity Search</Typography>
+            <Badge badgeContent={4} color='secondary'></Badge>
         </Toolbar>
       </AppBar>
+      <Drawer anchor='right' open={state.show} onClose={(e) => setState({ show : false })}><ImportsView/></Drawer>
     </Grid>
     </React.Fragment>
   )
-}
-
-function gitUpdate(e)
-{
-  console.log('Git Updating')
-
-/*
-  Meteor.call('gitUpdate', {}, (err, res) =>
-  {
-    console.log(res || 'No Response')
-    console.log(err || 'No Error')
-  })
-*/
 }
