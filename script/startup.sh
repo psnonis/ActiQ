@@ -8,7 +8,7 @@ docker run -d \
 --name rapids \
 --gpus all \
 --shm-size="8g" \
---entrypoint /work/ActIQ/setup/startup.sh \
+--entrypoint /work/setup/session.sh \
 -p 8888:8888 -p 8787:8787 -p 8786:8786 \
--v /work:/work \
+-v /work/ActIQ:/work \
 rapidsai/rapidsai-dev:0.11-cuda10.1-devel-ubuntu18.04-py3.7

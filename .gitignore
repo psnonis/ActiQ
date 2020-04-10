@@ -1,9 +1,6 @@
 __pycache__
 .ipynb_checkpoint
 
-dataset/yt8m/2/
-dataset/yt8m/3/
-dataset/yt8m/video/
-modeling/
-product/engine/tools/mp-depends/
-product/engine/tools/mp-baseline/
+volume/yt8m/2/
+volume/yt8m/3/
+volume/yt8m/video/
