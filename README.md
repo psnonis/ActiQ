@@ -12,4 +12,4 @@ ActIQ provides a responsive web application to import your videos and then make 
 
 # Demonstation Index - 50 Videos
 
-![](assets/index-cloud.png)
+![](assets/index-cloud.svg)
