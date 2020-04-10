@@ -1,3 +1,5 @@
+#!/bin/bash
+
 [ "$PWD" != "/engine" ] && echo "[FAILURE] Please Run From '/engine' Directory" && exit
 
 pip install torch torchvision cython fvcore

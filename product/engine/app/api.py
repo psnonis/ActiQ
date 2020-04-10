@@ -60,7 +60,7 @@ def api_queueCache():
         response           = {}
         response['result'] = cache(app).queueCache(video, stime, etime)
 
-        return reponse
+        return response
 
     else :
 
@@ -76,17 +76,19 @@ def api_queryIndex():
     request.get_data()
 
     terms =       request.args.get('terms')
+    chips = loads(request.args.get('chips'))
     knobs = loads(request.args.get('knobs'))
 
     data  = request.data
 
-    if  terms :
+    if  terms or chips :
         
         print(f'{PUR}{TXT} TERMS > {terms} {PAD}')
+        print(f'{PUR}{TXT} CHIPS > {chips} {PAD}')
         print(f'{PUR}{TXT} KNOBS > {knobs} {PAD}{RST}{EOL}')
 
         response           = {}
-        response['result'] = index(app).queryIndex(terms, knobs)
+        response['result'] = index(app).queryIndex(terms, chips, knobs)
 
         return response
 
