@@ -20,7 +20,7 @@ import { withTracker }  from 'meteor/react-meteor-data'
 
 import { primary,
          secondary   } from './Themes'
-import { Divider } from '@material-ui/core'
+import { Divider     } from '@material-ui/core'
 
 const useStyles = makeStyles(theme => (
 {
@@ -47,7 +47,6 @@ const css =
 
   table :
   {
-    background : 'red'
   },
 }
 
@@ -122,7 +121,7 @@ class ImportsPart extends React.Component
         </Toolbar>
         <Divider/>
         <Paper style={css.root} elevation={3}>
-          <Table style={css.table}>
+          <Table style={css.table} size='small'>
             <TableHead>
               <TableRow>
                 <TableCell>VideoID</TableCell>

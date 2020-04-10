@@ -126,7 +126,7 @@ class ResultsPart extends React.Component
             <Grid container item justify='center' style={css.roo}>
               <iframe src='circle.html' height={261} frameBorder='0' />
             </Grid>
-            <Say speak={`please make an activity query`} />
+            {/* <Say speak={`please make an activity query`} /> */}
           </Paper>
         )
       }

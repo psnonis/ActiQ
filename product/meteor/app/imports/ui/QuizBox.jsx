@@ -82,6 +82,7 @@ export default function QuizBox(props, hey) {
           <Tooltip title='Search Terms'>
             <InputBase className={cls.txt}
                        onChange={(e) => props.onChangeTerms(e)}
+                       type='search'
                        placeholder='Activity Search Term(s)'
                        value={props.terms} />
           </Tooltip>

@@ -88,10 +88,10 @@ export default class QueriesCard extends React.Component
       chips : [],
       knobs :
       {
-          subtitles : false,
+          subtitles : true,
           all_terms : true
       },
-      color : 'default'
+      color : 'secondary'
     }
   }
 
