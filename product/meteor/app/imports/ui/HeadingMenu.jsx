@@ -66,7 +66,7 @@ export default function HeadingMenu()
         <Toolbar>
             <IconButton edge='start' className={style.tools} color='inherit' aria-label='menu' onClick={(e) => setState({ show : true })}><MenuIcon/></IconButton>
             <Typography edge='start' className={style.title} color='inherit' variant='h6'>Video Activity Search</Typography>
-            <Badge badgeContent={4} color='secondary'></Badge>
+            <Badge badgeContent={74} color='secondary'></Badge>
         </Toolbar>
       </AppBar>
       <Drawer anchor='right' open={state.show} onClose={(e) => setState({ show : false })}><ImportsView/></Drawer>

@@ -3,7 +3,7 @@
 import   click as     cli
 from      time import time
 from      json import loads
-from     flask import Flask, Response, jsonify, request
+from     flask import Flask, Response, jsonify, request, send_file
 from  waitress import serve
 from     index import Index
 from     cache import Cache
@@ -104,6 +104,18 @@ def hello():
     print(f'{EOL}{SKY}{TXT} HELLO {PAD}{RST}{EOL}')
 
     return f'ActIQ Engine Server Up and Running! : {time()}'
+
+@app.route('/snapshot')
+def snapshot():
+
+    video = 'yzVT0kfkCGo'
+    frame = 'incoming'
+
+    print(f'{EOL}{SKY}{TXT} SNAPSHOT {PAD}{RST}{EOL}')
+    print(f'{PUR}{TXT} VIDEO > {video} {PAD}')
+    print(f'{PUR}{TXT} FRAME > {frame} {PAD}{RST}{EOL}')
+
+    return send_file(f'/engine/cache/{video}.{frame}.jpg', mimetype = 'image/jpg')
 
 @cli.command()
 @cli.option('--folder', default = '/engine/cache', type = str)

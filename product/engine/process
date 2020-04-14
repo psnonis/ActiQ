@@ -10,8 +10,10 @@ cache=$(realpath cache)
 tools=$(realpath tools)
 stage=$(realpath stage)
 
-${stage}/acquire    ${video}                   # acquire video
-${stage}/predict-mp ${video} ${stime} ${etime} # predict mediapipe
-${stage}/predict-sf ${video} ${stime} ${etime} # predict slowfast
-${stage}/caption    ${video} ${stime} ${etime} # predict subtitle
-${stage}/combine    ${video} ${stime} ${etime} # combine csv
+${stage}/acquire    ${video}                   && \
+${stage}/predict-mp ${video} ${stime} ${etime} && \
+${stage}/predict-sf ${video} ${stime} ${etime} && \
+${stage}/caption    ${video} ${stime} ${etime} && \
+${stage}/combine    ${video} ${stime} ${etime} && \
+echo "[SUCCESS]"                               || \
+echo "[FAILURE]"

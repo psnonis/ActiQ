@@ -1,9 +1,9 @@
 import { Mongo  } from 'meteor/mongo'
 import { Meteor } from 'meteor/meteor'
 
-export const Captures = new Mongo.Collection('captures')
+export const Queue = new Mongo.Collection('queue')
 
 if (Meteor.isServer)
 {
-    Captures.remove({})
+    Queue.remove({})
 }

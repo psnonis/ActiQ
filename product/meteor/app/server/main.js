@@ -2,7 +2,7 @@ import { Meteor        } from 'meteor/meteor'
 import { writeFileSync,
          readFileSync  } from 'fs'
 import   superagent      from 'superagent'
-import { Captures      } from '/imports/api/captures'
+import { Queue         } from '/imports/api/queue'
 
 Meteor.startup(() =>
 {
@@ -41,8 +41,6 @@ Meteor.methods(
 
         if (params.terms || params.chips)
         {
-            Captures.remove({})
-
             var uri       = GetAPIEndpoint('engine', 'queryIndex')
 
             let response  = await superagent.post(uri)
@@ -78,5 +76,5 @@ Meteor.methods(
         }
 
         throw new Meteor.Error(501, 'Error 501 : Invalid API Params', 'Invalid API Params')
-    },    
+    },
 })

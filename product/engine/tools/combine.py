@@ -57,9 +57,11 @@ for csv_file in glob(f'{cache}/{video}.classify.{stime}-{etime}.??.csv') :
             'video' : video,
             'stamp' : stamp,
             'model' : model,
+            'stime' : stime,
+            'etime' : etime,
 
-            'texts' : [],
-            'probs' : []
+            'text'  : [],
+            'prob'  : [],            
         }
 
         for n, rank in enumerate(ranks) :
@@ -81,20 +83,22 @@ for csv_file in glob(f'{cache}/{video}.classify.{stime}-{etime}.??.csv') :
                     'video' : video,
                     'stamp' : stamp,
                     'model' : model,
-                    'rank'  : n,
+                    'stime' : stime,
+                    'etime' : etime,
+
+                    'text'  : t,
                     'prob'  : p,
-                    'text'  : t
+                    'rank'  : n,                    
                 })
                 
-                entry['texts'] += [t]
-                entry['probs'] += [p]
+                entry['text'] += [t]
+                entry['prob'] += [p]
 
-            entry[f'rank{n}'] = n
-            entry[f'prob{n}'] = p
-            entry[f'text{n}'] = t
+            entry[f't{n}'] = t
+            entry[f'p{n}'] = p
 
-        entry['texts'] = ';'.join(entry['texts']).strip()
-        entry['probs'] = ';'.join(entry['probs']).strip()
+        entry['text'] = ';'.join(entry['text']).strip()
+        entry['prob'] = ';'.join(entry['prob']).strip()
 
         rows.append(entry)
 
