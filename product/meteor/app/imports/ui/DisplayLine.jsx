@@ -1,71 +1,80 @@
 import { Meteor }      from 'meteor/meteor'
 
 import React           from 'react'
+import PropTypes       from 'prop-types'
 
-import Container       from '@material-ui/core/Container'
-import Grid            from '@material-ui/core/Grid'
-import Box             from '@material-ui/core/Box'
+import { withStyles }  from '@material-ui/core/styles'
 import AppBar          from '@material-ui/core/AppBar'
 import Toolbar         from '@material-ui/core/Toolbar'
 import Typography      from '@material-ui/core/Typography'
-import Badge           from '@material-ui/core/Badge'
 import Button          from '@material-ui/core/Button'
 import IconButton      from '@material-ui/core/IconButton'
-import Tooltip         from '@material-ui/core/Tooltip'
-import Snackbar        from '@material-ui/core/Snackbar'
-import Fab             from '@material-ui/core/Fab'
+import MenuIcon        from '@material-ui/icons/Menu'
 
-import BottomNavigation from '@material-ui/core/BottomNavigation';
-import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
-import RestoreIcon from '@material-ui/icons/Restore';
-import FavoriteIcon from '@material-ui/icons/Favorite';      
-import LocationOnIcon from '@material-ui/icons/LocationOn';
+import GitHubIcon      from '@material-ui/icons/GitHub'
+import FeedbackIcon    from '@material-ui/icons/Feedback'
+import MenuBookIcon    from '@material-ui/icons/MenuBook'
 
-import MenuIcon             from '@material-ui/icons/Menu'
-import AddIcon              from '@material-ui/icons/Add';
-import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
-
-import { makeStyles  } from '@material-ui/core/styles'
-import { primary,
-         secondary   } from './Themes'
-
-const useStyles = makeStyles(theme => (
+const styles =
 {
-  root :
-  {
-    flexGrow        : 1,
-    borderRadius    : 4,
-    marginTop       : 8,
-    backgroundColor : primary
-  },
-
-  link :
-  {
-    color : 'white'
-  },
-
-  snackbar :
-  {
-    [theme.breakpoints.down('xs')] :
+    root :
     {
-      bottom: 90,
-    }
+      paddingTop : 1,
+      flexGrow : 1,
+    },
+
+    grow :
+    {
+      flexGrow : 1,
+    },
+
+    menuButton :
+    {
+      marginLeft  : -12,
+      marginRight : 20,
+    },
   }
-}))
 
-export default function DisplayLine()
-{
-  const cls = useStyles()
-  const [value, setValue] = React.useState(0)
+  function DisplayLine(props)
+  {
+    const { classes } = props
 
-  return (
-    <BottomNavigation value={value}
-                      onChange={(event, newValue) => {setValue(newValue)}}
-                      className={cls.root}
-                      showLabels>
-        <BottomNavigationAction className={cls.link} label='Recents'   icon={<RestoreIcon   />} />
-        <BottomNavigationAction className={cls.link} label='Favorites' icon={<FavoriteIcon  />} />
-        <BottomNavigationAction className={cls.link} label='Nearby'    icon={<LocationOnIcon/>} />
-    </BottomNavigation>      
-  )
-}
+    return (
+        <div className={classes.root}>
+          <AppBar position='static'>
+            <Toolbar>
+              <IconButton className={classes.menuButton} color='inherit' aria-label='Menu'>
+                <MenuIcon />
+              </IconButton>
+              <Typography variant='h6' color='inherit' className={classes.grow}>
+                News
+              </Typography>
+              <Button color='inherit'>Login</Button>
+            </Toolbar>
+          </AppBar>
+        </div>
+      )
+
+    return (
+      <div className={classes.root}>
+        <AppBar position='static'>
+          <Toolbar>
+            <IconButton className={classes.menuButton} color='inherit' aria-label='Menu'>
+              <MenuIcon />
+            </IconButton>
+            <Typography variant='h6' color='inherit' className={classes.grow}>
+              News
+            </Typography>
+            <Button color='inherit'>Login</Button>
+          </Toolbar>
+        </AppBar>
+      </div>
+    )
+  }
+  
+  DisplayLine.propTypes =
+  {
+    classes : PropTypes.object.isRequired,
+  }
+  
+  export default withStyles(styles)(DisplayLine)

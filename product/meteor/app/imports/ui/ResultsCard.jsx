@@ -10,7 +10,7 @@ import Button          from '@material-ui/core/Button'
 import Typography      from '@material-ui/core/Typography'
 import Snackbar        from '@material-ui/core/Snackbar'
 import IconButton      from '@material-ui/core/IconButton'
-
+import Slider          from '@material-ui/core/Slider'
 import CloseIcon       from '@material-ui/icons/Close'
 
 import Paper           from '@material-ui/core/Paper'
@@ -47,13 +47,30 @@ const css =
     borderRadius    : 4,
   },
 
-  tab :
+  video :
+  {
+    padding : 0
+  },
+
+  table :
   {
   },
 
-  gif :
+  tcell :
   {
   },
+
+  slide :
+  {
+  },
+
+  tiki :
+  {
+  },
+
+  image :
+  {
+  }
 }
 
 function speak(text)
@@ -88,28 +105,29 @@ class ResultsPart extends React.Component
     {
       return (
         <Paper style={css.root} elevation={3}>
-          <Table style={css.tab}>
+          <Table style={css.table}>
             <TableHead>
               <TableRow>
-                <TableCell>Rank</TableCell>
-                <TableCell>Video</TableCell>
-                <TableCell>Start</TableCell>
-                <TableCell>End</TableCell>
-                <TableCell>Models</TableCell>
-                <TableCell>Matches</TableCell>
-                <TableCell align='right'>Probability</TableCell>
+                <TableCell varient='head' size='small'>Clip</TableCell>
+                <TableCell varient='head' size='small'>Start</TableCell>
+                <TableCell varient='head' size='small'>End</TableCell>
+                <TableCell varient='head' size='small'>Location in Video</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
               {table.clips.map(hit => (
                 <TableRow key={hit.rank}>
-                  <TableCell              >{hit.rank }</TableCell>
-                  <TableCell              >{hit.video}</TableCell>
-                  <TableCell              >{hit.start}</TableCell>
-                  <TableCell              >{hit.end  }</TableCell>
-                  <TableCell              >{hit.model}</TableCell>
-                  <TableCell              >{hit.match}</TableCell>
-                  <TableCell align='right'>{`${(hit.probability * 100).toFixed(2)} %`}</TableCell>
+                  <TableCell size='small' width={80} padding='none'><img src={`http://actiq.biz:5000/snapshot/${hit.video}`} width={80} height={45} className='image'/></TableCell>
+                  <TableCell size='small' width={72} >{hit.start} sec</TableCell>
+                  <TableCell size='small' width={72} >{hit.end  } sec</TableCell>
+                  <TableCell size='small'            >
+                      <Slider
+                        defaultValue={hit.start}
+                        step={30}
+                        marks
+                        min={0}
+                        max={hit.length} />
+                  </TableCell>
                 </TableRow>
               ))}
             </TableBody>
@@ -123,7 +141,7 @@ class ResultsPart extends React.Component
       {
         return (
           <Paper style={css.root}>
-            <Grid container item justify='center' style={css.roo}>
+            <Grid container item justify='center' style={css.root}>
               <iframe src='circle.html' height={261} frameBorder='0' />
             </Grid>
             {/* <Say speak={`please make an activity query`} /> */}
@@ -134,7 +152,7 @@ class ResultsPart extends React.Component
       {
         return (
             <Paper style={css.root}>
-              <Grid container item justify='center' style={css.roo}>
+              <Grid container item justify='center' style={css.root}>
                 <iframe src='circle.html' height={261} frameBorder='0' />
               </Grid>
               <Snackbar anchorOrigin={{ vertical: 'bottom', horizontal: 'center',}}
@@ -150,7 +168,7 @@ class ResultsPart extends React.Component
         return (
           <Paper style={css.root}>
             <Grid container item justify='center' style={css.root}>
-              <img style={css.gif} src='tiki.gif' height={261} />
+              <img style={css.tiki} src='tiki.gif' height={261} />
             </Grid>
             <Say speak={`searching...`} />
           </Paper>

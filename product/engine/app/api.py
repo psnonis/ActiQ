@@ -103,12 +103,12 @@ def hello():
 
     print(f'{EOL}{SKY}{TXT} HELLO {PAD}{RST}{EOL}')
 
-    return f'ActIQ Engine Server Up and Running! : {time()}'
+    return f'ActiQ Engine Server Up and Running! : {time()}'
 
-@app.route('/snapshot')
-def snapshot():
+@app.route('/snapshot/<video>')
+def snapshot(video):
 
-    video = 'yzVT0kfkCGo'
+    video = video or 'JH3iid1bZ1Q'
     frame = 'incoming'
 
     print(f'{EOL}{SKY}{TXT} SNAPSHOT {PAD}{RST}{EOL}')
@@ -121,7 +121,7 @@ def snapshot():
 @cli.option('--folder', default = '/engine/cache', type = str)
 def main(folder):
 
-    print(f'{CLS}{SKY}{TXT}ActIQ Engine : RESTful Application Programming Interface{PAD}{RST}{EOL}')
+    print(f'{CLS}{SKY}{TXT}ActiQ Engine : RESTful Application Programming Interface{PAD}{RST}{EOL}')
 
     app.config['folder'] = folder
 

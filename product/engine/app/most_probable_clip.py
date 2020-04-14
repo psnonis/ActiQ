@@ -6,7 +6,7 @@ def most_prob(query):
     dict_query = {}
     splits = query.split()
     for split in splits:
-        search = es.search(index="actiq", body={"query": {"match" : {"text": split }}})
+        search = es.search(index="ActiQ", body={"query": {"match" : {"text": split }}})
         for hit in search['hits']['hits']:
             if 'hit' not in dict_query:
                 dict_query['hit'] = []

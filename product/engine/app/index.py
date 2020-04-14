@@ -257,15 +257,20 @@ class Index(object):
 
             max_stamp_loc_df = pd.DataFrame(max_stamp_loc)
             stamp            = max_stamp_loc_df.loc[max_stamp_loc_df['prob'].idxmax()]['stamp']
+            
+            # if ~isinstance(stamp, np.float64) :
+            #     stamp = stamp[0]
 
             print(f'stamp : {type(stamp)} = \n{stamp}\n')
 
-            clips.append({'video'  : video, 
-                          'length' : length,
-                          'start'  : int(stamp),
-                          'end'    : int(stamp) + 30,
-                          'match'  : '?'
-                         })
+            clips.append(
+            {
+                'rank'   : len(clips) + 1,
+                'video'  : video, 
+                'length' : length,
+                'start'  : int(stamp),
+                'end'    : int(stamp) + 30,
+            })
 
         for c in clips :
             print('clip :', c)

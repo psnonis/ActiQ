@@ -135,17 +135,17 @@ class ImportsPart extends React.Component
           <Table style={css.table} size='small'>
             <TableHead>
               <TableRow>
-                <TableCell>VideoID</TableCell>
-                <TableCell>Stage</TableCell>
-                <TableCell align='right'>Progress</TableCell>
+                <TableCell size='small'>VideoID</TableCell>
+                <TableCell size='small'>Stage</TableCell>
+                <TableCell size='small' align='right'>Progress</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
               {queue.map(video => (
                 <TableRow key={video._id}>
-                  <TableCell              >{video._id}</TableCell>
-                  <TableCell              >{video.stage}</TableCell>
-                  <TableCell align='right'><CircularProgress hide={video.stage == '[SUCCESS]' ? true : false}/></TableCell>
+                  <TableCell size='small'              >{video._id}</TableCell>
+                  <TableCell size='small'              >{video.stage}</TableCell>
+                  <TableCell size='small' align='right'><CircularProgress hide={video.stage == '[SUCCESS]' ? true : false}/></TableCell>
                 </TableRow>
               ))}
             </TableBody>

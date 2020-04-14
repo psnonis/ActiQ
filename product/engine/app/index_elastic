@@ -1,11 +1,11 @@
 #!/bin/bash
 
-for i in /work/ActIQ/product/engine/cache/*.combined.*.csv
+for i in /engine/cache/*.combined.*.csv
     do
         python csv_to_elastic.py \
             --elastic-address 'localhost:9200' \
             --csv-file $i \
-            --elastic-index 'actiq' \
+            --elastic-index 'ActiQ' \
             --elastic-type "video" \
             --datetime-field=dateField \
             --delimiter ',' \

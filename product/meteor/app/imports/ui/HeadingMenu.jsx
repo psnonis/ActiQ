@@ -50,9 +50,8 @@ const useStyles = makeStyles(theme => (
   queue :
   {
   },
-}))
 
-//MF-1m3A8snY
+}))
 
 export default function HeadingMenu()
 {

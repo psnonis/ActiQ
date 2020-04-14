@@ -262,7 +262,7 @@ def predict(config, labels, frames, csv, stime, etime, enabled) :
 
 if  __name__ == '__main__' :
 
-    parser = ArgumentParser(description = 'ActIQ SlowFast Prediction Pipeline')
+    parser = ArgumentParser(description = 'ActiQ SlowFast Prediction Pipeline')
 
     parser.add_argument('--config' , dest = f'config' , default =    '',  type =       str)
     parser.add_argument('--labels' , dest = f'labels' , default =    '',  type =       str)
