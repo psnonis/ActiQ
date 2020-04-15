@@ -113,7 +113,6 @@ class ImportsPart extends React.Component
         this.ready = true
       })
     }
-
   }
  
   render = () =>

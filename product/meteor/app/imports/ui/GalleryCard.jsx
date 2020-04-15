@@ -68,9 +68,10 @@ class GalleryPart extends React.Component
 
     //https://www.npmjs.com/package/react-youtube
 
+    var auto = hit.rank == 1 ? 1 : 0
     var link = `https://www.youtube.com/embed/${hit.video}`
     var trim = `start=${hit.start}&end=${hit.end}`
-    var opts = 'enablejsapi=1&origin=http://actiq.biz&rel=0&modestbranding=1&autohide=1&showinfo=0&controls=0&autoplay=1&playsinline=1&iv_load_policy=3'
+    var opts = `enablejsapi=1&origin=http://actiq.biz&rel=0&modestbranding=1&autohide=1&showinfo=0&controls=0&playsinline=1&iv_load_policy=3&autoplay=${auto}`
     var more = `cc_load_policy=1`
 
     return `${link}?${trim}&${opts}&${more}`

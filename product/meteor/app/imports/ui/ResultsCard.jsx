@@ -70,6 +70,10 @@ const css =
 
   image :
   {
+  },
+  grow :
+  {
+    flexGrow : 1,
   }
 }
 
@@ -106,6 +110,7 @@ class ResultsPart extends React.Component
       return (
         <Paper style={css.root} elevation={3}>
           <Table style={css.table}>
+          <caption><Button>Thumbs Up</Button><Button>Thumbs Down</Button></caption>
             <TableHead>
               <TableRow>
                 <TableCell varient='head' size='small'>Clip</TableCell>
